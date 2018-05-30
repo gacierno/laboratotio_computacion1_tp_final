@@ -3,40 +3,51 @@
 const Menu MAIN_MENU;
 const Menu CLIENTS_MENU;
 
+void MenuConstructor(*m,title,options){
+  m.title = title;
+  m.show = _showMenu;
+  m.options = options;
+}
+
 Menu constructClientsMenu(){
-  CLIENTS_MENU.title = "Clients";
 
   MenuOption mostrar;
-  mostrar.text = "Lista de clientes";
+  mostrar.text        = "Lista de clientes";
 
   MenuOption crear;
-  crear.text = "Crear cliente";
+  crear.text          = "Crear cliente";
 
   MenuOption baja;
-  baja.text = "Bajas";
+  baja.text           = "Bajas";
 
-  CLIENTS_MENU.options = [
-    mostrar,
-    crear,
-    baja
-  ];
+  MenuConstructor(
+    &CLIENTS_MENU,
+    "Clients",
+    [
+      mostrar,
+      crear,
+      baja
+    ]
+  );
+
 }
 
 Menu constructNavigation(){
 
-  // DEFINE MAIN MENU
-  MAIN_MENU.title         = "Main Menu";
-
   // DEFINE CLIENT MENU
-  constructClientsMenu()
+  constructClientsMenu();
   MenuOption client;
   clientOption.text       = CLIENTS_MENU.title;
   clientOption.function   = CLIENTS_MENU.show;
 
-  // ASSIGN MENU OPTIONS
-  MAIN_MENU.options = [
-    client
-  ];
+  // DEFINE MAIN MENU
+  MenuConstructor(
+    &MAIN_MENU,
+    "Main Menu",
+    [
+      client
+    ]
+  );
 
   return MAIN_MENU;
 }
