@@ -12,12 +12,12 @@ typedef struct{
     char baja; //‘s’ o ‘n’
 }Producto;
 
-void cargarProducto(char ar[],Producto a)
+void cargarProducto(char ar[],Producto a,FILE *arch)
 {
     char control='s';
     Producto aux;
-    FILE *arch;
-    if(fopen(arch,"rb"==NULL))
+
+    if(fopen(arch,"rb")==NULL)
     {
         printf("El archivo no existe\n");
 
@@ -94,13 +94,63 @@ void cargarProducto(char ar[],Producto a)
     fclose(arch);
     }
 }
+void buscarProducto(char ar[],Producto a,FILE *arch)
+{
+    char buscado[30];
+    Producto aux;
+    int pos=0;
+    printf("Ingrese el nombre del producto a buscar\n");
+    scanf("%s",&buscado);
 
+    if(fopen(arch,"rb")==NULL)
+    {
+        printf("El archivo no existe\n");
+    }
+    else
+    {
+        fopen(arch,"w+b");
+        while(!feof(arch))
+        {
+            rewind (arch);
+            pos=fread(&a,sizeof(Producto),1,arch)
+            if(strcmp(buscado,a.producto)==0)
+            {
+                printf("El producto a sido encontrado, ACTIVO: %c \n",a.baja)
+                printf("Desea modificarlo? S/N\n");
+                fflush(stdin);
+                scanf("%c",&control);
+                if(control=='s')
+                {
+                    if (a.baja=='n')
+                    {
+                        a.baja='s';
+                    }
+                    else
+                    {
+                        a.baja='n';
+                    }
+                    fseek (bin , (long) (-1) * sizeof (Producto), SEEK_CUR);
+                }
+                else
+                {
+                    printf("El producto no se modificara\n");
+                }
+            }
+            else
+            {
+                printf("EL producto no se encontro\n");
+            }
+        }
+        fclose(arch);
+    }
+}
 int main()
 {
     char archivo[30]="Productos.bin";
+    FILE *arch;
     Producto leo;
     cargarProducto(archivo,leo);
-    cargarProducto(archivo,leo);
+    buscarProducto(archivo,leo,arch)
     printf("prueba\n\n");
     return 0;
 }
