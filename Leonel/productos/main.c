@@ -57,8 +57,8 @@ void cargarProducto(char ar[],Producto a)
         {
             fread(&aux,sizeof(Producto),1,arch);        //se hace un bucle infinito despues de ingresar el primer producto
              printf("prueba\n\n");
-        }
-             printf("prueba\n\n");
+
+
             if (a.id==aux.id)
             {
                 printf("La id esta repetida, desea modificarla? s/n\n");
@@ -70,7 +70,7 @@ void cargarProducto(char ar[],Producto a)
                     scanf("%i",&a.id);
                 }
             }
-            if (a.producto==aux.producto)
+            else if (strcmp(a.producto,aux.producto)==0)
             {
                 printf("El nombre del producto esta repetido, desea modificarlo? s/n\n");
                 fflush(stdin);
@@ -88,7 +88,7 @@ void cargarProducto(char ar[],Producto a)
             printf("Desea ingresar otro producto? S/N\n");
             fflush(stdin);
             scanf("%c",&control);
-
+        }
 
     }
     fclose(arch);
