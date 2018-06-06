@@ -3,12 +3,12 @@
 
 void _showMenu(Menu *m){
 
-
   system("clear");
   system("cls");
 
   int i;
   int userOption;
+  char enterKey;
 
   printf("===============================================");
   printf("\n%s\n", (*m).title);
@@ -20,15 +20,12 @@ void _showMenu(Menu *m){
     printf("%s\n", (*m).options[i].text);
   }
 
-  printf("\n\n Enter option number: ");
+  printf("\n\nEnter option number: ");
   fflush(stdin);
   scanf("%i",&userOption);
 
   if(userOption > (*m).optionCount-1 || (*m).optionCount < 0){
-    printf("Selected option is invalid.\nPress any ENTER to try again.");
-    fflush(stdin);
-    scanf("%i",&userOption);
-    _showMenu(m);
+    (*m).show();
   }else{
     (*m).options[userOption].function();
   }
