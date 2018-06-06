@@ -52,7 +52,7 @@ typedef struct{
     int dia;
     int mes;
     int anio;
-    char pagado
+    char pagado;
     char anular; //‘a’
 }Venta;
 ```
