@@ -39,7 +39,9 @@ Venta alta_de_ventas()
     // fecha
     ingresar_fecha_validada( &nueva_venta.dia, &nueva_venta.mes, &nueva_venta.anio );
     // pagado
+    ingresar_pago( &nueva_venta );
     // anulado
+    anular_venta( &nueva_venta );
     return nueva_venta;
 }
 
@@ -101,6 +103,20 @@ void ingresar_fecha_validada( int *dia, int *mes, int *anio )
         //si se valida
         invalida = 0;
     }while( invalida );
+}
+
+void ingresar_pago( Venta *venta_actual )
+{
+    printf( "Esta venta ha sido pagada? \n" );
+    fflush(stdin);
+    scanf( "%c", &venta_actual->pagado );
+}
+
+void anular_venta( Venta *venta_actual )
+{
+    printf( "Desea anular esta venta? \n" );
+    fflush(stdin);
+    scanf( "%c", &venta_actual->anular );
 }
 
 void mostrar_una_venta( Venta actual )

@@ -23,6 +23,8 @@ int get_idProducto(void);
 
 int canidad_producto_verificada( int );
 void ingresar_fecha_validada( int*, int*, int* );
+void ingresar_pago( Venta* );
+void anular_venta( Venta* );
 
 void mostrar_una_venta( Venta );
 
