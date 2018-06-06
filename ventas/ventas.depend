@@ -1,5 +1,13 @@
 # depslib dependency file v1.0
-1514136974 source:c:\users\german\documents\github\laboratotio_computacion1_tp_final\ventas\main.c
+1528254497 source:c:\users\german\documents\github\laboratotio_computacion1_tp_final\ventas\main.c
 	<stdio.h>
 	<stdlib.h>
+	"ventas.h"
+
+1528256425 source:c:\users\german\documents\github\laboratotio_computacion1_tp_final\ventas\ventas.c
+	<stdlib.h>
+	<stdio.h>
+	"ventas.h"
+
+1528255964 c:\users\german\documents\github\laboratotio_computacion1_tp_final\ventas\ventas.h
 
