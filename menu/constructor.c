@@ -4,20 +4,22 @@
 Menu MAIN_MENU;
 Menu CLIENTS_MENU;
 
-void MenuConstructor(Menu *m,char title[], int optionCount){
-  strcpy(m->title,title);
-  m->show = _showMenu;
-  m->optionCount = optionCount;
+
+/*
+  ================================
+   CLIENTS MENU
+  ================================
+*/
+
+void showClientsMenu(){
+  _showMenu(&CLIENTS_MENU);
 }
 
 Menu constructClientsMenu(){
 
-  MenuConstructor(
-    &CLIENTS_MENU, // MENU
-    "Clients", // TITLE
-    3 // OPTION COUNT
-  );
-
+  strcpy(CLIENTS_MENU.title,"Clients");
+  CLIENTS_MENU.show = showClientsMenu;
+  CLIENTS_MENU.optionCount = 3;
 
   MenuOption mostrar;
   strcpy(mostrar.text,"Lista de clientes");
@@ -33,22 +35,40 @@ Menu constructClientsMenu(){
 
 }
 
-Menu constructNavigation(){
+/*
+  ================================
+   MAIN MENU
+  ================================
+*/
 
-  // DEFINE CLIENT MENU
-  constructClientsMenu();
+void showMainMenu(){
+  _showMenu(&MAIN_MENU);
+}
+
+Menu constructMainMenu(){
+
+  strcpy(MAIN_MENU.title,"MAIN MENU");
+  MAIN_MENU.show = showMainMenu;
+  MAIN_MENU.optionCount = 1;
+
   MenuOption client;
   strcpy(client.text,CLIENTS_MENU.title);
-  client.function   = CLIENTS_MENU.show;
-
-  // DEFINE MAIN MENU
-  MenuConstructor(
-    &MAIN_MENU,
-    "Main Menu",
-    1
-  );
+  client.function = CLIENTS_MENU.show;
 
   MAIN_MENU.options[0] = client;
+}
+
+
+/*
+  ================================
+   BUNDLE CONSTRUCTOR
+  ================================
+*/
+
+Menu constructNavigation(){
+
+  constructClientsMenu();
+  constructMainMenu();
 
   return MAIN_MENU;
 }
