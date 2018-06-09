@@ -156,22 +156,93 @@ int buscarPorID(char ar[], Producto a )
 void bajaProducto(char ar[],int pos)
 {
     FILE *arch;
-    Producto aux
+    Producto aux;
     arch=fopen(ar, "r+b");
-    if(pos<1)
+    if (arch == NULL)
     {
-        printf("No se encontro el producto\n");
+        printf("El archivo no existe\n");
     }
     else
     {
-        fseek(arch,sizeof(Producto)*pos-1,SEEK_SET);
-        fread(&aux,sizeof(Producto),1,arch);
-        aux.baja='n';
-        fseek(arch,sizeof(Producto)*pos-1,SEEK_SET);
-        fwrite(&aux,sizeof(Producto),1,arch);
+        if(pos<1)
+        {
+            printf("No se encontro el producto\n");
+        }
+        else
+        {
+            fseek(arch,sizeof(Producto)*pos-1,SEEK_SET);
+            fread(&aux,sizeof(Producto),1,arch);
+            aux.baja='n';
+            fseek(arch,sizeof(Producto)*pos-1,SEEK_SET);
+            fwrite(&aux,sizeof(Producto),1,arch);
+        }
     }
+
     fclose(arch);
 
+}
+
+void modificarProducto(Producto *a)
+{
+    char control='s';
+    int opcion;
+
+    while (control=='s')
+    {
+        printf("Ingrese la opcion que desea cambiar\n 1 Nombre\n 2 Costo\n 3 Precio de valor del producto\n 4 Stock\n ");
+        switch(opcion)
+        {
+            case 1:
+            {
+                printf("Ingrese nuevo producto\n");
+                scanf("%s",a->producto);
+            }
+            case 2:
+            {
+                printf("Ingrese nuevo costo\n");
+                scanf("%f",a->costo);
+            }
+            case 3:
+            {
+                printf("Ingrese nuevo precio de valor del producto\n");
+                scanf("%f",a->pvp);
+            }
+            case 4:
+            {
+                printf("Ingrese nuevo stock\n");
+                scanf("%i",a->stock);
+            }
+        }
+        printf("Desea seguir modificando el producto? s/n\n");
+        fflush(stdin);
+        scanf("%c",&control);
+    }
+
+}
+void modificar(char ar[],int pos)
+{
+    FILE *arch;
+    arch= fopen(ar,"w+b");
+    Producto a;
+    if (arch == NULL)
+    {
+        printf("El archivo no existe\n");
+    }
+    else
+    {
+        if(pos<1)
+        {
+            printf("No se encontro el producto\n");
+        }
+        else
+        {
+            fseek(arch,sizeof(Producto)*pos-1,SEEK_SET);
+            fread(&a,sizeof(Producto),1,arch);
+            modificarProducto(&a);
+            fseek(arch,sizeof(Producto)*pos-1,SEEK_SET);
+            fwrite(&a,sizeof(Producto),1,arch);
+        }
+    }
 }
 int main()
 {
