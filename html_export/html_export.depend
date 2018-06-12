@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1527865167 source:c:\users\german\documents\github\laboratotio_computacion1_tp_final\html_export\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1514136974 source:c:\users\german\documents\github\laboratotio_computacion1_tp_final\ventas\main.c
+	<stdio.h>
+	<stdlib.h>
+
