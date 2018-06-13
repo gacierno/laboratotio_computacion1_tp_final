@@ -6,3 +6,5 @@ html_export/obj/
 ventas/bin/
 
 ventas/obj/
+
+*.dat
