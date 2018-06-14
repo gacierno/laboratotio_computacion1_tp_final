@@ -34,7 +34,7 @@ Venta alta_de_ventas()
     nueva_venta.cantidad = canidad_producto_verificada( nueva_venta.idProducto );
     ingresar_fecha_validada( &nueva_venta.dia, &nueva_venta.mes, &nueva_venta.anio );
     ingresar_pago( &nueva_venta );
-    anular_venta( &nueva_venta );
+    nueva_venta.anular = 'n';
     return nueva_venta;
 }
 
@@ -144,11 +144,29 @@ void ingresar_pago( Venta *venta_actual )
     scanf( "%c", &venta_actual->pagado );
 }
 
-void anular_venta( Venta *venta_actual )
+void anular_venta( )
 {
+    Venta current;
+    int id_venta;
+
+    do
+    {
+        printf("Ingrese el id dela venta que desea anualr\n");
+        fflush(stdin);
+        scanf("%d", &id_venta);
+        current = buscar_venta_por_id( REGISTRO_VENTAS, id_venta );
+        if(current.id < 1)
+        {
+            printf("No se ha encontrado la venta especificada por favor intente nuevamente.\n");
+            printf("Presione ENTER para continuar\n");
+            getchar();
+        }
+    }while( current.id < 1 );
+
+    mostrar_una_venta( current );
     printf( "Desea anular esta venta? \n" );
     fflush(stdin);
-    scanf( "%c", &venta_actual->anular );
+    scanf( "%c", &current.anular );
 }
 
 void mostrar_una_venta( Venta actual )
@@ -202,9 +220,9 @@ void ejecutar_venta( int op )
         venta_actual = alta_de_ventas();
         guardar_venta_archivo( REGISTRO_VENTAS, venta_actual);
         break;
-    //case 2:
-        //fflush(stdin);
-        //venta_actual = buscar_venta_por_id()
+    case 2:
+        anular_venta();
+        break;
     case 99:
         listar_ventas( REGISTRO_VENTAS );
         break;

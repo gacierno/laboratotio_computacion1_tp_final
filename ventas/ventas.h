@@ -12,7 +12,7 @@ typedef struct{
     int mes;
     int anio;
     char pagado;
-    char anular; //‘a’
+    char anular; //‘a’ o 'n'
 }Venta;
 
 Venta alta_de_ventas( void );
@@ -26,7 +26,7 @@ int get_idProducto(void);
 int canidad_producto_verificada( int );
 void ingresar_fecha_validada( int*, int*, int* );
 void ingresar_pago( Venta* );
-void anular_venta( Venta* );
+void anular_venta( void );
 
 void mostrar_una_venta( Venta );
 void listar_ventas( char[] );
