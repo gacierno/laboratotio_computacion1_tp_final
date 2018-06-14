@@ -17,6 +17,8 @@ typedef struct{
 
 Venta alta_de_ventas( void );
 int cantidad_de_registros(char[]);
+void guardar_venta_archivo( char[], Venta );
+Venta buscar_venta_por_id( char[], int );
 
 int get_idCliente(void);
 int get_idProducto(void);
@@ -27,5 +29,9 @@ void ingresar_pago( Venta* );
 void anular_venta( Venta* );
 
 void mostrar_una_venta( Venta );
+void mostrar_opciones_ventas( void );
+void ejecutar_venta( int );
+
+int bucle_main_ventas( void );
 
 #endif // VENTAS_H_INCLUDED

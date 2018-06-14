@@ -5,7 +5,7 @@
 /*
 
 *   Ventas
-*       Alta de Ventas
+*       *Alta de Ventas
 *           Buscar cliente
 *           Buscar Producto
 *           Dar de Alta la venta
@@ -28,19 +28,12 @@ Venta alta_de_ventas()
 {
     Venta nueva_venta;
 
-    // obtener id autoincrementado
     nueva_venta.id = 1 + cantidad_de_registros( REGISTRO_VENTAS );
-    // buscar id cliente (por nombre??)
     nueva_venta.idCliente = get_idCliente();
-    // buscar id producto
     nueva_venta.idProducto = get_idProducto();
-    // cantidad
     nueva_venta.cantidad = canidad_producto_verificada( nueva_venta.idProducto );
-    // fecha
     ingresar_fecha_validada( &nueva_venta.dia, &nueva_venta.mes, &nueva_venta.anio );
-    // pagado
     ingresar_pago( &nueva_venta );
-    // anulado
     anular_venta( &nueva_venta );
     return nueva_venta;
 }
@@ -60,6 +53,45 @@ int cantidad_de_registros( char nombre_archivo[] )
 
     fclose( archivo_temp );
     return registros_encontrados;
+}
+
+void guardar_venta_archivo( char nombre_archivo[], Venta venta_lista )
+{
+    FILE *archivo_temp;
+    archivo_temp = fopen( nombre_archivo, "ab" );
+    if( archivo_temp != NULL)
+    {
+        fseek(archivo_temp, 0, SEEK_END);
+        fwrite(&venta_lista, sizeof(Venta), 1, archivo_temp);
+        fclose(archivo_temp);
+    }
+}
+
+Venta buscar_venta_por_id( char nombre_archivo[], int id_venta )
+{
+    Venta venta_encontrada;
+    int flag = 0;
+    FILE *archivo_temp;
+    archivo_temp = fopen( nombre_archivo, "rb" );
+    if( archivo_temp != NULL )
+    {
+        while( !feof(archivo_temp) && flag == 0 )
+        {
+            if( fread(&venta_encontrada, sizeof(Venta), 1, archivo_temp)!=0 )
+            {
+                if( venta_encontrada.id == id_venta )
+                {
+                    flag = 1;
+                }
+            }
+        }
+        fclose(archivo_temp);
+    }
+    if( flag == 0 )
+    {
+        venta_encontrada.id = -1;
+    }
+    return venta_encontrada;
 }
 
 int get_idCliente()
@@ -128,4 +160,49 @@ void mostrar_una_venta( Venta actual )
     printf( "Fecha..:.......%.2d / %.2d / %.4d\n", actual.dia, actual.mes, actual.anio );
     printf( "Pagado:........%c\n", actual.pagado );
     printf( "Anulado:.......%c\n", actual.anular );
+}
+
+void mostrar_opciones_ventas()
+{
+    printf("\n");
+    printf("1- Nueva Venta \n");
+    printf("2- Anular Venta \n");
+    printf("3- Listar Venta por Cliente \n");
+    printf("4- Listar Ventas del Mes \n");
+    printf("5- Promedio de ventas del mes \n");
+    printf("0- Volver al menu anterior \n");
+    printf("Por favor elija su opcion: \n");
+}
+
+void ejecutar_venta( int op )
+{
+    Venta venta_actual;
+    int id_venta;
+
+    switch( op )
+    {
+    case 1:
+        venta_actual = alta_de_ventas();
+        guardar_venta_archivo( REGISTRO_VENTAS, venta_actual);
+        break;
+    //case 2:
+        //fflush(stdin);
+        //venta_actual = buscar_venta_por_id()
+
+    }
+}
+
+int bucle_main_ventas()
+{
+    int opcion = 0;
+
+    do
+    {
+        mostrar_opciones_ventas();
+        fflush(stdin);
+        scanf("%d", &opcion);
+        ejecutar_venta(opcion);
+    }while(opcion != 0);
+
+    return opcion;
 }

@@ -4,9 +4,7 @@
 
 int main()
 {
-    Venta nueva;
-    nueva = alta_de_ventas();
-    mostrar_una_venta( nueva );
-    printf("Hello world!\n");
+    bucle_main_ventas();
+
     return 0;
 }
