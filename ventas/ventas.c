@@ -162,6 +162,23 @@ void mostrar_una_venta( Venta actual )
     printf( "Anulado:.......%c\n", actual.anular );
 }
 
+void listar_ventas( char nombre_archivo[] )
+{
+    Venta venta_actual;
+    FILE *archivo_temp;
+    archivo_temp = fopen( nombre_archivo, "rb" );
+    if( archivo_temp != NULL )
+    {
+        while( !feof(archivo_temp) )
+        {
+            printf("====================================\n");
+            if( fread(&venta_actual, sizeof(Venta), 1, archivo_temp) != 0)
+                mostrar_una_venta(venta_actual);
+        }
+        fclose(archivo_temp);
+    }
+}
+
 void mostrar_opciones_ventas()
 {
     printf("\n");
@@ -188,7 +205,9 @@ void ejecutar_venta( int op )
     //case 2:
         //fflush(stdin);
         //venta_actual = buscar_venta_por_id()
-
+    case 99:
+        listar_ventas( REGISTRO_VENTAS );
+        break;
     }
 }
 

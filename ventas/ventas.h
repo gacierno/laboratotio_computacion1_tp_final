@@ -29,6 +29,7 @@ void ingresar_pago( Venta* );
 void anular_venta( Venta* );
 
 void mostrar_una_venta( Venta );
+void listar_ventas( char[] );
 void mostrar_opciones_ventas( void );
 void ejecutar_venta( int );
 
