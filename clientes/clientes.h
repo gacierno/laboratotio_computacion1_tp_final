@@ -1,6 +1,3 @@
-#ifndef VENTAS_H_INCLUDED
-#define VENTAS_H_INCLUDED
-
 typedef struct{
     int id;
     int dni;
@@ -11,11 +8,11 @@ typedef struct{
     char baja;
 }Cliente;
 
-Cliente getCliente( int );
-Cliente getClientes( void );
 void createCliente(Cliente *);
-void deleteCliente(Cliente);
-void replaceCliente(Cliente);
-
-
-#endif // VENTAS_H_INCLUDED
+void createClients( void );
+void printClient(Cliente);
+void showAllClients( void );
+Cliente getLastClient( void );
+Cliente getClientByDNI( int );
+void disableClient(Cliente);
+void updateClient(Cliente *,int);

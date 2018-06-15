@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include "headers/menu.h"
+#include "../clear-screen/clear-screen.c"
 
 void _showMenu(Menu *m){
 
-  system("clear");
-  system("cls");
+  clearScreen();
 
   int i;
   int userOption;

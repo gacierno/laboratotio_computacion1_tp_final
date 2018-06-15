@@ -10,17 +10,13 @@
 #include "./clientes/clientes.c"
 
 int main(){
-  Cliente testClient;
-  testClient.id = 0;
-  testClient.dni = 1234;
-  strcpy(testClient.nombre,"Peperino");
-  strcpy(testClient.apellido,"Poporo");
-  strcpy(testClient.telefono,"12345");
-  strcpy(testClient.domicilio,"Calle falsa 123");
-  testClient.baja = 'n';
+  // createClients();
 
-  createCliente(&testClient);
-  Cliente target = getClient(0);
-  printf("Cliente: %s\n", target.nombre );
+  Cliente last = getLastClient();
+  Cliente test = getClientByDNI(37030992);
+
+  updateClient(&test,last.dni);
+  showAllClients();
+
   return 0;
 }
