@@ -86,12 +86,8 @@ void printClient(Cliente c){
 void showAllClients(){
   Cliente c;
   FILE * file;
-  Cliente lastClient = getLastClient();
-  int lastID = lastClient.id;
+  int lastID = getLastClient().id;
 
-  printf("LASTID: %i\n", lastID );
-
-  printf("CLIENTES:");
   if(lastID > -1){
     file = fopen("clients.dat", "rb+");
     if(file != NULL ){
@@ -154,10 +150,24 @@ void updateClient(Cliente *c,int dni){
   (*c).id = record.id;
   FILE * file = fopen("clients.dat", "rb+");
   if (file != NULL){
-    fseek(file, sizeof(Cliente)*record.id+1, SEEK_SET );
+    fseek(file, sizeof(Cliente) * (record.id), SEEK_SET );
     fwrite(c, sizeof(Cliente) , 1, file);
   } else {
     printf("Hubo un error al intentar guardar el archivo");
   }
   fclose(file);
+}
+
+Cliente disableClient(int dni){
+  Cliente record = getClientByDNI(dni);
+  record.baja = 's';
+  updateClient(&record,dni);
+  return record;
+}
+
+Cliente enableClient(int dni){
+  Cliente record = getClientByDNI(dni);
+  record.baja = 'n';
+  updateClient(&record,dni);
+  return record;
 }

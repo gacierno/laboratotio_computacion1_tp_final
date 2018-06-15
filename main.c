@@ -11,12 +11,14 @@
 
 int main(){
   // createClients();
+  //
+  // Cliente last = getLastClient();
+  // Cliente test = getClientByDNI(37030992);
+  //
+  // updateClient(&test,last.dni);
+  // showAllClients();
 
-  Cliente last = getLastClient();
-  Cliente test = getClientByDNI(37030992);
-
-  updateClient(&test,last.dni);
-  showAllClients();
+  // printClient(disableClient(37030992));
 
   return 0;
 }
