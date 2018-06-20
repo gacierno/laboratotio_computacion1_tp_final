@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "ventas.h"
 
 int main()
 {
-    printf("Hello world!\n");
+    bucle_main_ventas();
+
     return 0;
 }
