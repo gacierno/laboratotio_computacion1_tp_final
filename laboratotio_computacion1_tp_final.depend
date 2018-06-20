@@ -1,0 +1,20 @@
+# depslib dependency file v1.0
+1529513783 source:c:\users\german\documents\github\laboratotio_computacion1_tp_final\main.c
+	"./menu/constructor.c"
+
+1529512048 c:\users\german\documents\github\laboratotio_computacion1_tp_final\menu\constructor.c
+	<string.h>
+	"./menu.c"
+
+1529512048 c:\users\german\documents\github\laboratotio_computacion1_tp_final\menu\menu.c
+	<stdio.h>
+	"headers/menu.h"
+	"../clear-screen/clear-screen.c"
+
+1529512048 c:\users\german\documents\github\laboratotio_computacion1_tp_final\menu\headers\menu.h
+	"menu-option.h"
+
+1529512048 c:\users\german\documents\github\laboratotio_computacion1_tp_final\menu\headers\menu-option.h
+
+1529512048 c:\users\german\documents\github\laboratotio_computacion1_tp_final\clear-screen\clear-screen.c
+
