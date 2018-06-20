@@ -2,9 +2,15 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "../clear-screen/clear-screen.c"
 
-void createClient(){
+int fileExists( char filename[] ){
+  int exists = 0;
+  FILE * file = fopen("clients.dat", "r");
+  if (file != NULL) exists = 1;
+  return exists;
+}
+
+Cliente createClient(){
 
   int _dni;
   char _nombre[20];
@@ -12,19 +18,9 @@ void createClient(){
   char _telefono[20];
   char _domicilio[30];
 
-  clearScreen();
-
   Cliente nuevoCliente = getLastClient();
 
-  printf("=========================================\n");
-  printf("NUEVO CLIENTE\n");
-  printf("=========================================\n");
-
-  if(nuevoCliente.id == -1){
-    nuevoCliente.id = 0;
-  }else{
-    nuevoCliente.id++;
-  };
+  nuevoCliente.id++;
 
   printf("\nDNI: ");
   fflush(stdin);
@@ -33,28 +29,39 @@ void createClient(){
 
   printf("\nNombre: ");
   fflush(stdin);
-  scanf("%s",_nombre);
+  fgets(_nombre,20,stdin);
   strcpy(nuevoCliente.nombre,_nombre);
 
   printf("\nApellido: ");
   fflush(stdin);
-  scanf("%s",_apellido);
+  fgets(_apellido,20,stdin);
   strcpy(nuevoCliente.apellido,_apellido);
 
   printf("\nTelefono: ");
   fflush(stdin);
-  scanf("%s",_telefono);
+  fgets(_telefono,20,stdin);
   strcpy(nuevoCliente.telefono,_telefono);
 
   printf("\nDomicilio: ");
   fflush(stdin);
-  scanf("%s",_domicilio);
+  fgets(_domicilio,30,stdin);
   strcpy(nuevoCliente.domicilio,_domicilio);
 
   nuevoCliente.baja = 'n';
 
-  FILE * file = fopen("clients.dat", "ab+");
-  if (file != NULL) fwrite(&nuevoCliente, sizeof(Cliente), 1, file);
+  return nuevoCliente;
+
+}
+
+void guardarCliente(Cliente c){
+  printf("\nGUARDANDO CLIENTE:\n");
+  printClient(c);
+  char mode[] = "rb+";
+  if(!fileExists("clients.dat")) strcpy(mode,"wb+");
+
+  FILE * file = fopen("clients.dat", mode);
+  fseek(file,sizeof(Cliente) * (c.id) , SEEK_SET);
+  fwrite(&c, sizeof(Cliente) , 1, file);
   fclose(file);
 
   printf("\n> CLIENTE CREADO EXITOSAMENTE:");
@@ -63,7 +70,11 @@ void createClient(){
 void createClients(){
   char control = 's';
   while(control == 's'){
-    createClient();
+
+    printf("=========================================\n");
+    printf("NUEVO CLIENTE\n");
+    printf("=========================================\n");
+    guardarCliente(createClient());
     printf("\n\n\n--------------------------------\n");
     printf("Quiere agregar otro cliente?(s/n)\n");
     fflush(stdin);
@@ -86,19 +97,21 @@ void printClient(Cliente c){
 void showAllClients(){
   Cliente c;
   FILE * file;
+  printf("LAST CLIENT:");
+  printClient(getLastClient());
   int lastID = getLastClient().id;
 
-  if(lastID > -1){
-    file = fopen("clients.dat", "rb+");
-    if(file != NULL ){
-      printf("\n=====================================================================\n");
-      while(lastID != -1){
-        fread(&c, sizeof(Cliente), 1, file);
-        printClient(c);
-        if(lastID == c.id) lastID = -1;
-      }
+  if(lastID > -1 && fileExists("clients.dat")){
+    file = fopen("clients.dat", "rb");
 
+    printf("\n=====================================================================\n");
+    while(lastID != -1){
+      printf("%i LAST ID", lastID );
+      fread(&c, sizeof(Cliente), 1, file);
+      printClient(c);
+      if(c.id >= lastID) lastID = -1;
     }
+
     fclose(file);
   }else{
     printf("Aun no se han ingresado clientes.");
@@ -106,12 +119,16 @@ void showAllClients(){
 }
 
 Cliente getLastClient(){
-  FILE * file = fopen("clients.dat", "rb+");
   Cliente c;
-  long size = 0;
+  FILE * file;
+  int size = 0;
 
-  if(file != NULL ){
-    fseek(file,sizeof(Cliente) * -1, SEEK_END);
+  if(fileExists("clients.dat")){
+    file = fopen("clients.dat", "rb");
+    size = ftell(file);
+    printf("FILE SIZE: %d", size );
+    printf("CLIENT SIZE: %d", sizeof(Cliente) );
+    fseek(file,size - sizeof(Cliente), SEEK_SET);
     fread(&c, sizeof(Cliente) , 1, file);
   }else{
     c.id = -1;
@@ -170,4 +187,31 @@ Cliente enableClient(int dni){
   record.baja = 'n';
   updateClient(&record,dni);
   return record;
+}
+
+void darDeBaja(){
+  int dni;
+  printf("Ingrese el DNI del cliente que quiere dar de baja:");
+  fflush(stdin);
+  scanf("%i",&dni );
+  if(getClientByDNI(dni).id != -1){
+    disableClient(dni);
+  }
+}
+
+void modificarCliente(){
+  int dni;
+  Cliente c;
+  printf("Ingrese el DNI del cliente que quiere modificar:");
+  fflush(stdin);
+  scanf("%i",&dni );
+  c = getClientByDNI(dni);
+  if(c.id != -1){
+    printf("\nMODIFICAR CLIENTE:\n");
+    printClient(c);
+    printf("\n== NUEVOS DATOS:\n");
+    guardarCliente(createClient());
+  }else{
+    printf("\nNo exite un cliente con DNI %i",dni);
+  }
 }

@@ -4,7 +4,7 @@
 
 void _showMenu(Menu *m){
 
-  clearScreen();
+  // clearScreen();
 
   int i;
   int userOption;
