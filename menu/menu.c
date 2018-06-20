@@ -4,13 +4,13 @@
 
 void _showMenu(Menu *m){
 
-  clearScreen();
+  // clearScreen();
 
   int i;
   int userOption;
   char enterKey;
 
-  printf("===============================================");
+  printf("\n===============================================");
   printf("\n%s\n", (*m).title);
   printf("===============================================");
   printf("\n\n");

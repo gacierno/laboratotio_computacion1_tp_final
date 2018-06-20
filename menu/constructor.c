@@ -1,5 +1,6 @@
 #include <string.h>
 #include "./menu.c"
+#include "../clientes/clientes.c"
 
 Menu MAIN_MENU;
 Menu CLIENTS_MENU;
@@ -19,19 +20,29 @@ Menu constructClientsMenu(){
 
   strcpy(CLIENTS_MENU.title,"Clients");
   CLIENTS_MENU.show = showClientsMenu;
-  CLIENTS_MENU.optionCount = 3;
+  CLIENTS_MENU.optionCount = 4;
 
   MenuOption mostrar;
+  mostrar.function = showAllClients;
   strcpy(mostrar.text,"Lista de clientes");
   CLIENTS_MENU.options[0] = mostrar;
 
   MenuOption crear;
-  strcpy(crear.text,"Crear cliente");
+  crear.function = createClients;
+  strcpy(crear.text,"Crear clientes");
   CLIENTS_MENU.options[1] = crear;
 
+
+  MenuOption modificar;
+  modificar.function = modificarCliente;
+  strcpy(modificar.text,"Modificar cliente");
+  CLIENTS_MENU.options[2] = modificar;
+
+
   MenuOption baja;
+  baja.function = darDeBaja;
   strcpy(baja.text,"Bajas");
-  CLIENTS_MENU.options[2] = baja;
+  CLIENTS_MENU.options[3] = baja;
 
 }
 
