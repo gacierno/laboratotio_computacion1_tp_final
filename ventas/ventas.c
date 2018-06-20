@@ -58,10 +58,20 @@ int cantidad_de_registros( char nombre_archivo[] )
 void guardar_venta_archivo( char nombre_archivo[], Venta venta_lista )
 {
     FILE *archivo_temp;
-    archivo_temp = fopen( nombre_archivo, "ab" );
+    archivo_temp = fopen( nombre_archivo, "a+b" );
     if( archivo_temp != NULL)
     {
-        fseek(archivo_temp, 0, SEEK_END);
+        if (venta_lista.id > cantidad_de_registros( nombre_archivo ))
+        {
+            printf("la venta NO NO NO existe \n");
+            fseek(archivo_temp, 0, SEEK_END);
+        }else{
+            printf("la venta existe \n");
+            printf("tamanyo%d\n", (venta_lista.id-1)*sizeof(Venta));
+            system("pause");
+            fseek( archivo_temp, ((venta_lista.id-1)*sizeof(Venta)), SEEK_SET);
+            printf("posicion  %d\n", ftell(archivo_temp));
+        }
         fwrite(&venta_lista, sizeof(Venta), 1, archivo_temp);
         fclose(archivo_temp);
     }
@@ -167,6 +177,7 @@ void anular_venta( )
     printf( "Desea anular esta venta? \n" );
     fflush(stdin);
     scanf( "%c", &current.anular );
+    guardar_venta_archivo( REGISTRO_VENTAS, current );
 }
 
 void mostrar_una_venta( Venta actual )
