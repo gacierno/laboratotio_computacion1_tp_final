@@ -36,10 +36,10 @@ Producto nuevoProducto(void)
 
 int contarRegistros( char ar[] )
 {
+    int cant=0,div=0,total=0;
     //abrir el archivo lecctura
     FILE *arch;
     arch= fopen(ar,"rb");
-    int pos=0,cant=0;
     if(arch == NULL)
     {
         printf("El archivo no existe\n");
@@ -47,10 +47,12 @@ int contarRegistros( char ar[] )
     else
     {
       //ir hasta el final
-      pos=fseek(arch,0,SEEK_END);
+    fseek(arch,0,SEEK_END);
     //contar cuanto bytes
+    total=ftell(arch);
     //dividirlo por el tamanio del registro
-      cant=pos/sizeof(Producto);
+      div=sizeof(Producto);
+      cant=total/div;
     }
     fclose(arch);
     //dvolver el numero
@@ -101,9 +103,9 @@ void buscarProductos(char ar[], Producto a )
     }
     else
     {
-        while(!feof(arch))
+        while((fread(&aux,sizeof(Producto),1,arch))>0)
         {
-            fread(&aux,sizeof(Producto),1,arch);
+
             compararProductos(&a,&aux);
         }
     }
@@ -138,13 +140,10 @@ int buscarPorID(char ar[], Producto a )
     }
     else
     {
-        while(!feof(arch) && flag==-1)
+        while( (fread(&aux,sizeof(Producto),1,arch))>0 && flag==-1)
         {
-
-            fread(&aux,sizeof(Producto),1,arch);
             if(a.id == aux.id )
             {
-
                 flag=a.id;
             }
         }
@@ -170,7 +169,7 @@ void bajaProducto(char ar[],int pos)
         }
         else
         {
-            fseek(arch,sizeof(Producto)*pos-1,SEEK_SET);
+            fseek(arch,sizeof(Producto)*(pos-1),SEEK_SET);
             fread(&aux,sizeof(Producto),1,arch);
             aux.baja='n';
             fseek(arch,sizeof(Producto)*pos-1,SEEK_SET);
