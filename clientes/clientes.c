@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <string.h>
 
+Menu CLIENTS_MENU;
+
+
 int fileExists( char filename[] ){
   int exists = 0;
   FILE * file = fopen("clients.dat", "r");
@@ -80,6 +83,7 @@ void createClients(){
     fflush(stdin);
     scanf("%s",&control);
   }
+  CLIENTS_MENU.show();
 }
 
 void printClient(Cliente c){
@@ -97,11 +101,9 @@ void printClient(Cliente c){
 void showAllClients(){
   Cliente c;
   FILE * file;
-  printf("LAST CLIENT:");
-  printClient(getLastClient());
   int lastID = getLastClient().id;
 
-  if(lastID > -1 && fileExists("clients.dat")){
+  if(lastID != -1 && fileExists("clients.dat")){
     file = fopen("clients.dat", "rb");
 
     printf("\n=====================================================================\n");
@@ -125,9 +127,8 @@ Cliente getLastClient(){
 
   if(fileExists("clients.dat")){
     file = fopen("clients.dat", "rb");
+    fseek(file,0, SEEK_END);
     size = ftell(file);
-    printf("FILE SIZE: %d", size );
-    printf("CLIENT SIZE: %d", sizeof(Cliente) );
     fseek(file,size - sizeof(Cliente), SEEK_SET);
     fread(&c, sizeof(Cliente) , 1, file);
   }else{
@@ -162,13 +163,13 @@ Cliente getClientByDNI( int dni ){
   return c;
 }
 
-void updateClient(Cliente *c,int dni){
+void updateClient(Cliente c,int dni){
   Cliente record = getClientByDNI(dni);
-  (*c).id = record.id;
+  c.id = record.id;
   FILE * file = fopen("clients.dat", "rb+");
   if (file != NULL){
     fseek(file, sizeof(Cliente) * (record.id), SEEK_SET );
-    fwrite(c, sizeof(Cliente) , 1, file);
+    fwrite(&c, sizeof(Cliente) , 1, file);
   } else {
     printf("Hubo un error al intentar guardar el archivo");
   }
@@ -178,14 +179,14 @@ void updateClient(Cliente *c,int dni){
 Cliente disableClient(int dni){
   Cliente record = getClientByDNI(dni);
   record.baja = 's';
-  updateClient(&record,dni);
+  updateClient(record,dni);
   return record;
 }
 
 Cliente enableClient(int dni){
   Cliente record = getClientByDNI(dni);
   record.baja = 'n';
-  updateClient(&record,dni);
+  updateClient(record,dni);
   return record;
 }
 

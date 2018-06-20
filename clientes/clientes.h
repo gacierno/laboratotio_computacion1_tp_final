@@ -16,4 +16,4 @@ Cliente getLastClient( void );
 Cliente getClientByDNI( int );
 Cliente disableClient(int);
 Cliente enableClient(int);
-void updateClient(Cliente *,int);
+void updateClient(Cliente,int);
