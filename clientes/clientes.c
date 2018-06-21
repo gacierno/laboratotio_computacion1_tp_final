@@ -22,7 +22,6 @@ Cliente createClient(){
   char _domicilio[30];
 
   Cliente nuevoCliente = getLastClient();
-
   nuevoCliente.id++;
 
   printf("\nDNI: ");
@@ -131,21 +130,22 @@ Cliente getLastClient(){
     size = ftell(file);
     fseek(file,size - sizeof(Cliente), SEEK_SET);
     fread(&c, sizeof(Cliente) , 1, file);
+    fclose(file);
   }else{
     c.id = -1;
   }
-  fclose(file);
+
   return c;
 }
 
 Cliente getClientByDNI( int dni ){
   Cliente c;
+  c.id = -1;
   int found = -1;
   FILE * file;
   int lastID = getLastClient().id;
   if(lastID > -1){
     file = fopen("clients.dat", "rb");
-    if(file != NULL ){
 
       while(c.id <= lastID && found == -1){
         fread(&c, sizeof(Cliente), 1, file);
@@ -154,7 +154,6 @@ Cliente getClientByDNI( int dni ){
         }
       }
 
-    }
     fclose(file);
   }else{
     printf("Aun no se han ingresado clientes.");
@@ -204,6 +203,7 @@ void darDeBaja(){
 void modificarCliente(){
   int dni;
   Cliente c;
+  Cliente nuevosDatos;
   printf("Ingrese el DNI del cliente que quiere modificar:");
   fflush(stdin);
   scanf("%i",&dni );
@@ -212,7 +212,10 @@ void modificarCliente(){
     printf("\nMODIFICAR CLIENTE:\n");
     printClient(c);
     printf("\n== NUEVOS DATOS:\n");
-    guardarCliente(createClient());
+    nuevosDatos = createClient();
+    nuevosDatos.id = c.id;
+    nuevosDatos.baja = c.baja;
+    guardarCliente(nuevosDatos);
   }else{
     printf("\nNo exite un cliente con DNI %i",dni);
   }

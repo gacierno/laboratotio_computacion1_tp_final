@@ -2,7 +2,7 @@
 
 int main(){
     constructNavigation();
-    MAIN_MENU.show(&MAIN_MENU);
+    MAIN_MENU.show();
     return 0;
 }
 
