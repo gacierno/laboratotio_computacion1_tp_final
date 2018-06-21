@@ -4,7 +4,7 @@
 
 // NUEVO //////////////////////
 
-Menu PRODUCTOS_MENU;
+//Menu PRODUCTOS_MENU;
 
 typedef struct{
     int id;
@@ -55,14 +55,14 @@ void agregarProducto(void)
         while(control=='s')
         {
             aux=nuevoProducto();
-            fwrite(&aux,sizeof(Producto),1,arch);
+            guardarArchivo(aux);
             printf("Desea ingresar otro producto? S/N\n");
             fflush(stdin);
             scanf("%c",&control);
         }
     }
     fclose(arch);
-    PRODUCTOS_MENU.show();
+//    PRODUCTOS_MENU.show();
 }
 int contarRegistros( void )
 {
@@ -92,31 +92,13 @@ int contarRegistros( void )
 
 }
 
-void compararProductos(Producto *a,Producto *aux)
-{
-    char control;
 
-
-    while (strcmp( (*a).producto,(*aux).producto )== 0)
-    {
-        printf("El nombre del producto esta repetido, desea modificarlo? s/n\n");
-        fflush(stdin);
-        scanf("%c",&control);
-        if(control=='s')
-        {
-            printf("Ingrese un nombre nuevo para su producto\n");
-            scanf("%s",a->producto);
-        }
-    }
-
-}
-
-
-void buscarProductos( Producto a )
+Producto verificarNombre( Producto a )
 {
     FILE *arch;
-    arch = fopen("producto.bin","rb");
+    arch = fopen("producto.bin","r+b");
     Producto aux;
+    char nombre[30];
     if ( arch == NULL)
     {
         printf("El archivo no existe\n");
@@ -126,17 +108,36 @@ void buscarProductos( Producto a )
         while((fread(&aux,sizeof(Producto),1,arch))>0)
         {
 
-            compararProductos(&a,&aux);
+            //compararProductos(a,aux);
+            while (strcmp( (a).producto,(aux).producto )== 0)
+            {
+                printf("Su producto esta repetido, modifiquelo\n");
+                a=nuevoProducto();
+            }
         }
     }
     fclose(arch);
+    return a;
 }
 void guardarArchivo(Producto a)
 {
     FILE *arch;
-    arch= fopen("producto.bin","ab");
-    buscarProductos(a);
-    fwrite(&a,sizeof(Producto),1,arch);
+    arch=fopen("producto.bin","rb");
+    if(arch==NULL)
+    {
+        fclose(arch);
+        fopen("producto.bin","wb");
+    }
+    else
+    {
+        fclose(arch);
+        fopen("producto.bin","ab");
+    }
+    if (arch!=NULL)
+    {
+        a=verificarNombre(a);
+        fwrite(&a,sizeof(Producto),1,arch);
+    }
     fclose(arch);
 }
 int buscarPorID( Producto a )
@@ -172,10 +173,13 @@ int buscarPorID( Producto a )
     fclose(arch);
     return flag;
 }
-void bajaProducto(int pos)
+void bajaProducto(void)
 {
-    FILE *arch;
+    int pos=0;
     Producto aux;
+    printf("Ingrese id a bajar\n");
+    scanf("%i",&pos);
+    FILE *arch;
     arch=fopen("producto.bin", "r+b");
     if (arch == NULL)
     {
@@ -192,57 +196,24 @@ void bajaProducto(int pos)
             fseek(arch,sizeof(Producto)*(pos-1),SEEK_SET);
             fread(&aux,sizeof(Producto),1,arch);
             aux.baja='n';
-            fseek(arch,sizeof(Producto)*pos-1,SEEK_SET);
+            fseek(arch,sizeof(Producto)*(pos-1),SEEK_SET);
             fwrite(&aux,sizeof(Producto),1,arch);
         }
     }
 
     fclose(arch);
-    PRODUCTOS_MENU.show();
+    //PRODUCTOS_MENU.show();
 }
 
-void modificarProducto(Producto *a)
-{
-    char control='s';
-    int opcion;
 
-    while (control=='s')
-    {
-        printf("Ingrese la opcion que desea cambiar\n 1 Nombre\n 2 Costo\n 3 Precio de valor del producto\n 4 Stock\n ");
-        switch(opcion)
-        {
-            case 1:
-            {
-                printf("Ingrese nuevo producto\n");
-                scanf("%s",a->producto);
-            }
-            case 2:
-            {
-                printf("Ingrese nuevo costo\n");
-                scanf("%f",a->costo);
-            }
-            case 3:
-            {
-                printf("Ingrese nuevo precio de valor del producto\n");
-                scanf("%f",a->pvp);
-            }
-            case 4:
-            {
-                printf("Ingrese nuevo stock\n");
-                scanf("%i",a->stock);
-            }
-        }
-        printf("Desea seguir modificando el producto? s/n\n");
-        fflush(stdin);
-        scanf("%c",&control);
-    }
-    PRODUCTOS_MENU.show();
-}
-void modificar(int pos)
+void modificar(void)
 {
-    FILE *arch;
-    arch= fopen("producto.bin","w+b");
+    int pos=0;
     Producto a;
+    printf("Ingrese ID del producto a modificar\n");
+    scanf("%i",&pos);
+    FILE *arch;
+    arch= fopen("producto.bin","r+b");
     if (arch == NULL)
     {
         printf("El archivo no existe\n");
@@ -255,13 +226,22 @@ void modificar(int pos)
         }
         else
         {
-            fseek(arch,sizeof(Producto)*pos-1,SEEK_SET);
-            fread(&a,sizeof(Producto),1,arch);
-            modificarProducto(&a);
-            fseek(arch,sizeof(Producto)*pos-1,SEEK_SET);
+            printf("Ingrese nombre del producto\n");
+            scanf("%s",&a.producto);
+            printf("Ingrese cantidad de productos\n");
+            scanf("%i",&a.stock);
+            printf("Ingrese costo del producto\n");
+            scanf("%f",&a.costo);
+            printf("Ingrese el precio de venta del producto\n");
+            scanf("%f",&a.pvp);
+            printf("El producto esta activo S/N\n");
+            fflush(stdin);
+            scanf("%c",&a.baja);
+            fseek(arch,sizeof(Producto)*(pos-1),SEEK_SET);
             fwrite(&a,sizeof(Producto),1,arch);
         }
     }
+    fclose(arch);
 }
 
 void mostrarProducto( Producto uno )
@@ -274,7 +254,7 @@ void mostrarProducto( Producto uno )
     printf( "pvp:........%f\n", uno.pvp );
     printf( "Costo:.......%f\n", uno.costo );
 }
-void mostrarTodosProductos (char nombre[])
+void mostrarTodosProductos (void)
 {
     Producto aux;
     FILE *arch;
@@ -287,5 +267,53 @@ void mostrarTodosProductos (char nombre[])
         }
     }
     fclose(arch);
-    PRODUCTOS_MENU.show();
+   // PRODUCTOS_MENU.show();
+}
+
+void menuProductos()
+{
+    int opcion=0;
+    char control='s';
+    while (control=='s')
+    {
+        printf("MENU DE PRODUCTOS\n\n 1 INGRESAR NUEVO PRODUCTO\n 2 BAJAR PRODUCTO\n 3 MODIFICAR PRODUCTO\n 4 LISTA DE PRODUCTOS\n 0 SALIR\n");
+        scanf("%i",&opcion);
+        switch(opcion)
+        {
+            case 1:
+            {
+                agregarProducto();
+                break;
+            }
+            case 2:
+            {
+                bajaProducto();
+                break;
+            }
+            case 3:
+            {
+                modificar();
+                break;
+            }
+            case 4:
+            {
+                mostrarTodosProductos();
+                break;
+            }
+            case 0:
+            {
+                return 0;
+                break;
+            }
+            printf("Desea realizar otra operacion? S/N\n");
+            fflush(stdin);
+            scanf("%c",&control);
+        }
+    }
+}
+
+
+int main()
+{
+   menuProductos();
 }
