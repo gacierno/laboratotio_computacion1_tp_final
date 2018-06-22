@@ -23,16 +23,16 @@
 
 */
 
+
+/*
+FUNCIONES PARA MANEJAR FECHAS
+*/
 int fecha_valida( int dia, int mes, int anyo )
 {
     int total_dias_mes; //28, 29, 30 o 31
     int anyo_biciesto = 0; // 0 no es biciesto
     int valido = 0; // todavia no es valido
-    /*
-    Un año es bisiesto en el calendario Gregoriano, si es divisible entre 4,
-    excepto aquellos divisibles entre 100 pero no entre 400.
-    (anio MOD 400 = 0) OR ((anio MOD 100 <> 0) AND (anio MOD 4 = 0))
-    */
+
     if( mes > 0 && mes < 13 )
     {
         if( anyo%400 == 0 || ( anyo%100 !=0 && anyo%4 == 0 ) )
@@ -63,6 +63,32 @@ int fecha_valida( int dia, int mes, int anyo )
     return valido;
 }
 
+void ingresar_fecha_validada( int *dia, int *mes, int *anio )
+{
+    int valida = 0; // aun no esta validada
+    do
+    {
+        printf( "Ingrese el dia: \n" );
+        fflush( stdin );
+        scanf( "%d", dia );
+        printf( "Ingrese el mes: \n" );
+        fflush( stdin );
+        scanf( "%d", mes);
+        printf( "Ingrese el anio \n" );
+        fflush( stdin );
+        scanf( "%d", anio);
+        //si se valida
+        valida = fecha_valida( *dia, *mes, *anio );
+        if( !valida )
+        {
+            printf("\nIngrese una fecha valida \n");
+        }
+    }while( !valida );
+}
+
+/*
+FUNCIONES PARA ALTA DE VENTAS
+*/
 Venta alta_de_ventas()
 {
     Venta nueva_venta;
@@ -81,15 +107,12 @@ int cantidad_de_registros( char nombre_archivo[] )
 {
     FILE *archivo_temp;
     int registros_encontrados = 0;
-
     archivo_temp = fopen( nombre_archivo, "rb" );
-
     if( archivo_temp != NULL )
     {
         fseek( archivo_temp, 0, SEEK_END);
         registros_encontrados = ftell( archivo_temp ) / sizeof(Venta); //se supone que dara un entero
     }
-
     fclose( archivo_temp );
     return registros_encontrados;
 }
@@ -142,6 +165,16 @@ Venta buscar_venta_por_id( char nombre_archivo[], int id_venta )
     return venta_encontrada;
 }
 
+void ingresar_pago( Venta *venta_actual )
+{
+    printf( "Esta venta ha sido pagada? \n" );
+    fflush(stdin);
+    scanf( "%c", &venta_actual->pagado );
+}
+
+/*
+FUNCIONES PARA MANEJAR EL CLIENTE DE LA VENTA
+*/
 int get_idCliente()
 {
     int id = 0;
@@ -154,6 +187,9 @@ int get_idCliente()
     return id;
 }
 
+/*
+FUNCIONES PARA MANEJAR EL PRODUCTO DE LA VENTA
+*/
 int get_idProducto()
 {
     return 0;
@@ -171,40 +207,14 @@ int canidad_producto_verificada( int id_producto )
     return cantidad;
 }
 
-void ingresar_fecha_validada( int *dia, int *mes, int *anio )
-{
-    int invalida = 1; // aun no esta validada
-
-    do
-    {
-        printf( "Ingrese el dia: \n" );
-        fflush( stdin );
-        scanf( "%d", dia );
-        printf( "Ingrese el mes: \n" );
-        fflush( stdin );
-        scanf( "%d", mes);
-        printf( "Ingrese el anio \n" );
-        fflush( stdin );
-        scanf( "%d", anio);
-
-        //si se valida
-        invalida = 0;
-    }while( invalida );
-}
-
-void ingresar_pago( Venta *venta_actual )
-{
-    printf( "Esta venta ha sido pagada? \n" );
-    fflush(stdin);
-    scanf( "%c", &venta_actual->pagado );
-}
-
+/*
+FUNCIONES PARA ANULAR LA VENTA
+*/
 void anular_venta( )
 {
     Venta current;
     int id_venta;
     char anulacion;
-
     do
     {
         printf("Ingrese el id dela venta que desea anualr\n");
@@ -218,7 +228,6 @@ void anular_venta( )
             getchar();
         }
     }while( current.id < 1 );
-
     mostrar_una_venta( current );
     printf( "Desea anular esta venta? \n" );
     fflush(stdin);
@@ -234,6 +243,9 @@ void anular_venta( )
     guardar_venta_archivo( REGISTRO_VENTAS, current );
 }
 
+/*
+FUNCIONES PARA VISUALIZAR LAS VENTAS
+*/
 void mostrar_una_venta( Venta actual )
 {
     printf( "La venta cargada tiene el siguiente detalle: \n" );
@@ -306,6 +318,9 @@ void listar_ventas_por_mes( char nombre_archivo[], int mes, int anyo )
     printf("\nSe han encontrado %d registros de ventas para el mes %.2d\n", contador, mes);
 }
 
+/*
+FUNCIONES PARA REALIZAR CALCULOS
+*/
 int calcular_total_diario( char nombre_archivo[], int dia, int mes, int anyo )
 {
     int total = 0;
@@ -330,13 +345,46 @@ int calcular_total_diario( char nombre_archivo[], int dia, int mes, int anyo )
     return total;
 }
 
-int calcular_promedio_mensual()
+float calcular_promedio_mensual()
 {
-    int promedio = 0;
+    float promedio = 0.0;
+    int suma = 0;
+    int dia_0 = 1, mes_0, anyo_0;
+    int matriz_mes[4][7];
+    int f = 0, c = 0;
+
+    printf("Ingrese el mes y el anyo que desea calular el promedio \n");
+    printf("Mes: \n");
+    fflush( stdin );
+    scanf( "%d", &mes_0 );
+    printf("Anyo: \n");
+    fflush( stdin );
+    scanf( "%d", &anyo_0 );
+
+    for( f = 0; f < 4; f++ )
+    {
+        for( c = 0; c < 7; c++ )
+        {
+            matriz_mes[f][c] = calcular_total_diario( REGISTRO_VENTAS, dia_0, mes_0, anyo_0 );
+            dia_0++;
+        }
+    }
+
+    for( f = 0; f < 4; f++ )
+    {
+        for( c = 0; c < 7; c++ )
+        {
+            suma = suma + matriz_mes[f][c];
+        }
+    }
+    promedio = (float)suma / 28;
 
     return promedio;
 }
 
+/*
+FUNCIONES PARA MANEJAR EL SUBMENU VENTAS
+*/
 void mostrar_opciones_ventas()
 {
     printf("\n");
@@ -372,6 +420,9 @@ void ejecutar_venta( int op )
     case 4:
         ingresar_fecha_validada( &m_dia, &m_mes, &m_anyo);
         listar_ventas_por_mes( REGISTRO_VENTAS, m_mes, m_anyo );
+        break;
+    case 5:
+        printf( "\nEl promedio mensual es %f", calcular_promedio_mensual() );
         break;
     case 99:
         listar_ventas( REGISTRO_VENTAS );
