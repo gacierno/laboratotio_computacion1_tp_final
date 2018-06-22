@@ -32,6 +32,10 @@ void mostrar_una_venta( Venta );
 void listar_ventas( char[] );
 void listar_ventas_por_cliente( char[], int );
 void listar_ventas_por_mes( char[], int, int );
+
+int calcular_total_diario( char[], int, int, int );
+int calcular_promedio_mensual( void );
+
 void mostrar_opciones_ventas( void );
 void ejecutar_venta( int );
 

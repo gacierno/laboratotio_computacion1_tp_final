@@ -241,6 +241,7 @@ void listar_ventas_por_cliente( char nombre_archivo[], int id_cliente )
         }
         fclose(archivo_temp);
     }
+    printf("====================================\n");
     printf("\nSe han encontrado %d registros de ventas para el cliente %d\n", contador, id_cliente);
 }
 
@@ -266,6 +267,30 @@ void listar_ventas_por_mes( char nombre_archivo[], int mes, int anyo )
     printf("\nSe han encontrado %d registros de ventas para el mes %.2d\n", contador, mes);
 }
 
+int calcular_total_diario( char nombre_archivo[], int dia, int mes, int anyo )
+{
+    int total = 0;
+    int precio_aux = 1;
+    Venta actual;
+    FILE *archivo;
+
+    archivo = fopen( nombre_archivo, "rb");
+    if( archivo != NULL )
+    {
+        while( fread(&actual, sizeof(Venta), 1, archivo) != 0 )
+        {
+            if( actual.anio == anyo && actual.mes == mes && actual.dia == dia )//es decir q es el mismo dia
+            {
+                //precio_aux = obtener_precio( actual.idProducto )
+                total = total + actual.cantidad * precio_aux;
+            }
+        }
+        fclose(archivo);
+    }
+
+    return total;
+}
+
 void mostrar_opciones_ventas()
 {
     printf("\n");
@@ -283,6 +308,7 @@ void ejecutar_venta( int op )
     Venta venta_actual;
     int id_venta;
     int id_client;
+    int m_dia, m_mes, m_anyo;
 
     switch( op )
     {
@@ -298,7 +324,8 @@ void ejecutar_venta( int op )
         listar_ventas_por_cliente( REGISTRO_VENTAS, id_client );
         break;
     case 4:
-        listar_ventas_por_mes( REGISTRO_VENTAS, 6, 2018);
+        ingresar_fecha_validada( &m_dia, &m_mes, &m_anyo);
+        listar_ventas_por_mes( REGISTRO_VENTAS, m_mes, m_anyo );
         break;
     case 99:
         listar_ventas( REGISTRO_VENTAS );
