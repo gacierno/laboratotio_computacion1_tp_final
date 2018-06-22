@@ -10,7 +10,7 @@
 *           Buscar Producto
 *           Dar de Alta la venta
 *           Guardar en archivo la venta
-*       Anulación de Venta
+*       *Anulación de Venta
 *       Listar ventas por cliente
 *       Listar Ventas del mes
 *       Mostrar promedio de ventas del mes (utilizar matrices)
@@ -57,24 +57,24 @@ int cantidad_de_registros( char nombre_archivo[] )
 
 void guardar_venta_archivo( char nombre_archivo[], Venta venta_lista )
 {
-    FILE *archivo_temp;
-    archivo_temp = fopen( nombre_archivo, "a+b" );
-    if( archivo_temp != NULL)
+    FILE *archivo;
+    int seek_state = 0;
+    archivo = fopen( nombre_archivo, "rb" );
+    if( archivo != NULL)
     {
+        fclose( archivo );
         if (venta_lista.id > cantidad_de_registros( nombre_archivo ))
         {
-            printf("la venta NO NO NO existe \n");
-            fseek(archivo_temp, 0, SEEK_END);
+            archivo = fopen( nombre_archivo, "ab");
         }else{
-            printf("la venta existe \n");
-            printf("tamanyo%d\n", (venta_lista.id-1)*sizeof(Venta));
-            system("pause");
-            fseek( archivo_temp, ((venta_lista.id-1)*sizeof(Venta)), SEEK_SET);
-            printf("posicion  %d\n", ftell(archivo_temp));
+            archivo = fopen( nombre_archivo, "rb+");
+            seek_state = fseek( archivo, ((venta_lista.id-1)*sizeof(Venta)), SEEK_SET);
         }
-        fwrite(&venta_lista, sizeof(Venta), 1, archivo_temp);
-        fclose(archivo_temp);
+    }else{
+        archivo = fopen( nombre_archivo, "wb" );
     }
+    fwrite(&venta_lista, sizeof(Venta), 1, archivo);
+    fclose(archivo);
 }
 
 Venta buscar_venta_por_id( char nombre_archivo[], int id_venta )
@@ -158,6 +158,7 @@ void anular_venta( )
 {
     Venta current;
     int id_venta;
+    char anulacion;
 
     do
     {
@@ -176,7 +177,15 @@ void anular_venta( )
     mostrar_una_venta( current );
     printf( "Desea anular esta venta? \n" );
     fflush(stdin);
-    scanf( "%c", &current.anular );
+    scanf( "%c", &anulacion );
+    if( anulacion == 's' || anulacion == 'S')
+    {
+        current.anular = 'a';
+    }
+    else
+    {
+        current.anular = 'n';
+    }
     guardar_venta_archivo( REGISTRO_VENTAS, current );
 }
 

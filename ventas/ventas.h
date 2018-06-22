@@ -30,6 +30,8 @@ void anular_venta( void );
 
 void mostrar_una_venta( Venta );
 void listar_ventas( char[] );
+void listar_ventas_por_cliente( char[], int );
+void listar_ventas_por_mes( char[], int, int );
 void mostrar_opciones_ventas( void );
 void ejecutar_venta( int );
 
