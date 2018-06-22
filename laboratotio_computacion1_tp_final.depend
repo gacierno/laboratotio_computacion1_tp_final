@@ -1,34 +1,35 @@
 # depslib dependency file v1.0
-1529518000 source:c:\users\german\documents\github\laboratotio_computacion1_tp_final\main.c
+1529671718 source:c:\users\german\documents\github\laboratotio_computacion1_tp_final\main.c
 	"./menu/constructor.c"
 
-1529522288 c:\users\german\documents\github\laboratotio_computacion1_tp_final\menu\constructor.c
+1529677218 c:\users\german\documents\github\laboratotio_computacion1_tp_final\menu\constructor.c
 	<string.h>
 	"./menu.c"
 	"../clientes/clientes.c"
 	"../productos.c"
+	"../ventas/ventas.c"
 
-1529517722 c:\users\german\documents\github\laboratotio_computacion1_tp_final\menu\menu.c
+1529671718 c:\users\german\documents\github\laboratotio_computacion1_tp_final\menu\menu.c
 	<stdio.h>
 	"headers/menu.h"
 	"../clear-screen/clear-screen.c"
 
-1529512048 c:\users\german\documents\github\laboratotio_computacion1_tp_final\menu\headers\menu.h
+1529671718 c:\users\german\documents\github\laboratotio_computacion1_tp_final\menu\headers\menu.h
 	"menu-option.h"
 
-1529512048 c:\users\german\documents\github\laboratotio_computacion1_tp_final\menu\headers\menu-option.h
+1529671718 c:\users\german\documents\github\laboratotio_computacion1_tp_final\menu\headers\menu-option.h
 
-1529517722 c:\users\german\documents\github\laboratotio_computacion1_tp_final\clear-screen\clear-screen.c
+1529671718 c:\users\german\documents\github\laboratotio_computacion1_tp_final\clear-screen\clear-screen.c
 
-1529517722 c:\users\german\documents\github\laboratotio_computacion1_tp_final\clientes\clientes.c
+1529671718 c:\users\german\documents\github\laboratotio_computacion1_tp_final\clientes\clientes.c
 	"clientes.h"
 	<stdlib.h>
 	<stdio.h>
 	<string.h>
 
-1529517722 c:\users\german\documents\github\laboratotio_computacion1_tp_final\clientes\clientes.h
+1529671718 c:\users\german\documents\github\laboratotio_computacion1_tp_final\clientes\clientes.h
 
-1529522750 c:\users\german\documents\github\laboratotio_computacion1_tp_final\productos.c
+1529674493 c:\users\german\documents\github\laboratotio_computacion1_tp_final\productos.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -66,4 +67,11 @@
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
+
+1529675880 c:\users\german\documents\github\laboratotio_computacion1_tp_final\ventas\ventas.h
+
+1529675834 c:\users\german\documents\github\laboratotio_computacion1_tp_final\ventas\ventas.c
+	<stdlib.h>
+	<stdio.h>
+	"ventas.h"
 

@@ -43,4 +43,10 @@ void ejecutar_venta( int );
 
 int bucle_main_ventas( void );
 
+/* IMPLEMENTACIO MENU INTEGRADO  */
+void ventas_menu_altas(void);
+void ventas_menu_lista_cliente( void );
+void ventas_menu_lista_mes( void );
+void ventas_menu_promedio( void );
+
 #endif // VENTAS_H_INCLUDED

@@ -2,9 +2,12 @@
 #include "./menu.c"
 #include "../clientes/clientes.c"
 #include "../productos.c"
+#include "../ventas/ventas.c"
+
 Menu MAIN_MENU;
 Menu CLIENTS_MENU;
 Menu PRODUCTOS_MENU;
+Menu VENTAS_MENU;
 
 /*
   ================================
@@ -73,10 +76,10 @@ Menu constructProductosMenu(){
   PRODUCTOS_MENU.options[1] = crear;
 
 
-  MenuOption modificar;
-  modificar.function = &modificarProducto;
-  strcpy(modificar.text,"Modificar producto");
-  PRODUCTOS_MENU.options[2] = modificar;
+  MenuOption modificate;
+  modificate.function = &modificar;
+  strcpy(modificate.text,"Modificar producto");
+  PRODUCTOS_MENU.options[2] = modificate;
 
 
   MenuOption baja;
@@ -84,6 +87,48 @@ Menu constructProductosMenu(){
   strcpy(baja.text,"Bajas");
   PRODUCTOS_MENU.options[3] = baja;
 
+}
+
+/*
+  ================================
+   VENTAS MENU
+  ================================
+*/
+
+void showVentasMenu(){
+  _showMenu(&VENTAS_MENU);
+}
+
+Menu constructVentasMenu(){
+
+    strcpy(VENTAS_MENU.title,"Ventas");
+    VENTAS_MENU.show = showVentasMenu;
+    VENTAS_MENU.optionCount = 5;
+
+    MenuOption altaV;
+    altaV.function = &ventas_menu_altas;
+    strcpy(altaV.text,"Nueva Venta");
+    VENTAS_MENU.options[0] = altaV;
+
+    MenuOption anularV;
+    anularV.function = &anular_venta;
+    strcpy(anularV.text,"Anular Venta");
+    VENTAS_MENU.options[1] = anularV;
+
+    MenuOption listarVentasXCliente;
+    listarVentasXCliente.function = &ventas_menu_lista_cliente;
+    strcpy(listarVentasXCliente.text,"Listar Ventas por Cliente");
+    VENTAS_MENU.options[2] = listarVentasXCliente;
+
+    MenuOption listarVentasXMes;
+    listarVentasXMes.function = &ventas_menu_lista_mes;
+    strcpy(listarVentasXMes.text,"Listar Ventas del Mes");
+    VENTAS_MENU.options[3] = listarVentasXMes;
+
+    MenuOption promedioVentas;
+    promedioVentas.function = &ventas_menu_promedio;
+    strcpy(promedioVentas.text,"Promedio de ventas del mes");
+    VENTAS_MENU.options[4] = promedioVentas;
 }
 
 
@@ -101,7 +146,7 @@ Menu constructMainMenu(){
 
   strcpy(MAIN_MENU.title,"MAIN MENU");
   MAIN_MENU.show = showMainMenu;
-  MAIN_MENU.optionCount = 2;
+  MAIN_MENU.optionCount = 3;
 
   MenuOption client;
   strcpy(client.text,CLIENTS_MENU.title);
@@ -111,8 +156,13 @@ Menu constructMainMenu(){
   strcpy(producto.text,PRODUCTOS_MENU.title);
   producto.function = PRODUCTOS_MENU.show;
 
+  MenuOption venta;
+  strcpy( venta.text, VENTAS_MENU.title );
+  venta.function = VENTAS_MENU.show;
+
   MAIN_MENU.options[0] = client;
   MAIN_MENU.options[1] = producto;
+  MAIN_MENU.options[2] = venta;
 }
 
 
@@ -126,6 +176,7 @@ Menu constructNavigation(){
 
   constructClientsMenu();
   constructProductosMenu();
+  constructVentasMenu();
   constructMainMenu();
 
   return MAIN_MENU;
