@@ -11,8 +11,8 @@
 *           Dar de Alta la venta
 *           Guardar en archivo la venta
 *       *Anulación de Venta
-*       Listar ventas por cliente
-*       Listar Ventas del mes
+*       *Listar ventas por cliente
+*       *Listar Ventas del mes
 *       Mostrar promedio de ventas del mes (utilizar matrices)
 *           La Matriz tiene que ser de 7*4 para obtener el promedio de ventas diario de los ultimos 28 dias
 *       Validaciones:
@@ -213,11 +213,10 @@ void listar_ventas( char nombre_archivo[] )
     archivo_temp = fopen( nombre_archivo, "rb" );
     if( archivo_temp != NULL )
     {
-        while( !feof(archivo_temp) )
+        while( fread(&venta_actual, sizeof(Venta), 1, archivo_temp) != 0 )
         {
             printf("====================================\n");
-            if( fread(&venta_actual, sizeof(Venta), 1, archivo_temp) != 0)
-                mostrar_una_venta(venta_actual);
+            mostrar_una_venta(venta_actual);
         }
         fclose(archivo_temp);
     }
@@ -244,6 +243,29 @@ void listar_ventas_por_cliente( char nombre_archivo[], int id_cliente )
     }
     printf("\nSe han encontrado %d registros de ventas para el cliente %d\n", contador, id_cliente);
 }
+
+void listar_ventas_por_mes( char nombre_archivo[], int mes, int anyo )
+{
+    Venta venta_actual;
+    int contador = 0;
+    FILE *archivo_temp;
+    archivo_temp = fopen( nombre_archivo, "rb" );
+    if( archivo_temp != NULL )
+    {
+        while(  fread(&venta_actual, sizeof(Venta), 1, archivo_temp) != 0 )
+        {
+            if( venta_actual.mes == mes && venta_actual.anio == anyo )
+            {
+                contador ++;
+                printf("====================================\n");
+                mostrar_una_venta(venta_actual);
+            }
+        }
+        fclose(archivo_temp);
+    }
+    printf("\nSe han encontrado %d registros de ventas para el mes %.2d\n", contador, mes);
+}
+
 void mostrar_opciones_ventas()
 {
     printf("\n");
@@ -274,6 +296,9 @@ void ejecutar_venta( int op )
     case 3:
         id_client = get_idCliente();
         listar_ventas_por_cliente( REGISTRO_VENTAS, id_client );
+        break;
+    case 4:
+        listar_ventas_por_mes( REGISTRO_VENTAS, 6, 2018);
         break;
     case 99:
         listar_ventas( REGISTRO_VENTAS );
