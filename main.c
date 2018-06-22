@@ -1,8 +1,9 @@
-#include "menu/menu.c"
+#include "./menu/constructor.c"
 
 int main(){
-
-  
-
-  return 0;
+    constructNavigation();
+    MAIN_MENU.show();
+    return 0;
 }
+
+
