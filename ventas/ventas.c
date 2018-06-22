@@ -23,6 +23,45 @@
 
 */
 
+int fecha_valida( int dia, int mes, int anyo )
+{
+    int total_dias_mes; //28, 29, 30 o 31
+    int anyo_biciesto = 0; // 0 no es biciesto
+    int valido = 0; // todavia no es valido
+    /*
+    Un año es bisiesto en el calendario Gregoriano, si es divisible entre 4,
+    excepto aquellos divisibles entre 100 pero no entre 400.
+    (anio MOD 400 = 0) OR ((anio MOD 100 <> 0) AND (anio MOD 4 = 0))
+    */
+    if( mes > 0 && mes < 13 )
+    {
+        if( anyo%400 == 0 || ( anyo%100 !=0 && anyo%4 == 0 ) )
+        {
+            anyo_biciesto = 1;
+        }
+        if( mes == 1 || mes == 3 || mes == 5 || mes == 7 || mes == 8 || mes == 10 || mes == 12 )
+        {
+            total_dias_mes = 31;
+        }
+        else if( mes != 2 )
+        {
+            total_dias_mes = 30;
+        }
+        else if( anyo_biciesto )
+        {
+            total_dias_mes = 28;
+        }
+        else
+        {
+            total_dias_mes = 29;
+        }
+        if( dia > 0 && dia < (total_dias_mes + 1) )
+        {
+            valido = 1; //validado
+        }
+    }
+    return valido;
+}
 
 Venta alta_de_ventas()
 {
@@ -289,6 +328,13 @@ int calcular_total_diario( char nombre_archivo[], int dia, int mes, int anyo )
     }
 
     return total;
+}
+
+int calcular_promedio_mensual()
+{
+    int promedio = 0;
+
+    return promedio;
 }
 
 void mostrar_opciones_ventas()

@@ -15,6 +15,8 @@ typedef struct{
     char anular; //‘a’ o 'n'
 }Venta;
 
+int fecha_valida( int, int, int );
+
 Venta alta_de_ventas( void );
 int cantidad_de_registros(char[]);
 void guardar_venta_archivo( char[], Venta );
