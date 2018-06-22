@@ -58,7 +58,6 @@ int cantidad_de_registros( char nombre_archivo[] )
 void guardar_venta_archivo( char nombre_archivo[], Venta venta_lista )
 {
     FILE *archivo;
-    int seek_state = 0;
     archivo = fopen( nombre_archivo, "rb" );
     if( archivo != NULL)
     {
@@ -68,7 +67,7 @@ void guardar_venta_archivo( char nombre_archivo[], Venta venta_lista )
             archivo = fopen( nombre_archivo, "ab");
         }else{
             archivo = fopen( nombre_archivo, "rb+");
-            seek_state = fseek( archivo, ((venta_lista.id-1)*sizeof(Venta)), SEEK_SET);
+            fseek( archivo, ((venta_lista.id-1)*sizeof(Venta)), SEEK_SET);
         }
     }else{
         archivo = fopen( nombre_archivo, "wb" );
@@ -106,7 +105,14 @@ Venta buscar_venta_por_id( char nombre_archivo[], int id_venta )
 
 int get_idCliente()
 {
-    return 0;
+    int id = 0;
+    int dni = 0;
+    printf( "Por favor ingrese el numero de documento del cliente \n");
+    fflush( stdin );
+    scanf( "%d", &dni );
+    id = dni%10;
+    printf("El id encontrado es %d", id);
+    return id;
 }
 
 int get_idProducto()
@@ -217,6 +223,27 @@ void listar_ventas( char nombre_archivo[] )
     }
 }
 
+void listar_ventas_por_cliente( char nombre_archivo[], int id_cliente )
+{
+    Venta venta_actual;
+    int contador = 0;
+    FILE *archivo_temp;
+    archivo_temp = fopen( nombre_archivo, "rb" );
+    if( archivo_temp != NULL )
+    {
+        while(  fread(&venta_actual, sizeof(Venta), 1, archivo_temp) != 0 )
+        {
+            if( venta_actual.idCliente == id_cliente )
+            {
+                contador ++;
+                printf("====================================\n");
+                mostrar_una_venta(venta_actual);
+            }
+        }
+        fclose(archivo_temp);
+    }
+    printf("\nSe han encontrado %d registros de ventas para el cliente %d\n", contador, id_cliente);
+}
 void mostrar_opciones_ventas()
 {
     printf("\n");
@@ -233,6 +260,7 @@ void ejecutar_venta( int op )
 {
     Venta venta_actual;
     int id_venta;
+    int id_client;
 
     switch( op )
     {
@@ -242,6 +270,10 @@ void ejecutar_venta( int op )
         break;
     case 2:
         anular_venta();
+        break;
+    case 3:
+        id_client = get_idCliente();
+        listar_ventas_por_cliente( REGISTRO_VENTAS, id_client );
         break;
     case 99:
         listar_ventas( REGISTRO_VENTAS );
