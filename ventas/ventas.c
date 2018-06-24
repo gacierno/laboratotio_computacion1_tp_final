@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "ventas.h"
+#include "../productos.c"
+#include "../clientes/clientes.h"
 
 /*
 
@@ -177,12 +179,14 @@ FUNCIONES PARA MANEJAR EL CLIENTE DE LA VENTA
 */
 int get_idCliente()
 {
+    Cliente current_cli;
     int id = 0;
     int dni = 0;
     printf( "Por favor ingrese el numero de documento del cliente \n");
     fflush( stdin );
     scanf( "%d", &dni );
-    id = dni%10;
+    current_cli = getClientByDNI( dni ); //funcion de ../clientes/clientes.h
+    id = current_cli.id;
     printf("El id encontrado es %d", id);
     return id;
 }
