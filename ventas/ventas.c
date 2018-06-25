@@ -5,6 +5,7 @@
 #include "../clientes/clientes.h"
 
 Menu VENTAS_MENU;
+Menu MAIN_MENU;
 
 /*
 
@@ -640,5 +641,10 @@ void ventas_menu_promedio( void )
 {
     printf( "\nEl promedio mensual es %.2f \n", calcular_promedio_mensual() );
     VENTAS_MENU.show();
+}
+
+void ventas_menu_salida( void )
+{
+    MAIN_MENU.show();
 }
 
