@@ -9,6 +9,10 @@ Menu CLIENTS_MENU;
 Menu PRODUCTOS_MENU;
 Menu VENTAS_MENU;
 
+void showMainMenu(){
+  _showMenu(&MAIN_MENU);
+}
+
 /*
   ================================
    CLIENTS MENU
@@ -49,7 +53,7 @@ Menu constructClientsMenu(){
 
 
   MenuOption volver;
-  volver.function = MAIN_MENU.show;
+  volver.function = &showMainMenu;
   strcpy(volver.text,"Volver al menu principal");
   CLIENTS_MENU.options[4] = volver;
 
@@ -95,7 +99,7 @@ Menu constructProductosMenu(){
 
 
   MenuOption volver;
-  volver.function = MAIN_MENU.show;
+  volver.function = &showMainMenu;
   strcpy(volver.text,"Volver al menu principal");
   PRODUCTOS_MENU.options[4] = volver;
 
@@ -143,7 +147,7 @@ Menu constructVentasMenu(){
     VENTAS_MENU.options[4] = promedioVentas;
 
     MenuOption volver;
-    volver.function = MAIN_MENU.show;
+    volver.function = &showMainMenu;
     strcpy(volver.text,"Volver al menu principal");
     VENTAS_MENU.options[5] = volver;
 }
@@ -155,9 +159,7 @@ Menu constructVentasMenu(){
   ================================
 */
 
-void showMainMenu(){
-  _showMenu(&MAIN_MENU);
-}
+
 
 Menu constructMainMenu(){
 
