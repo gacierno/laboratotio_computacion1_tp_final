@@ -35,13 +35,19 @@ void listar_ventas( char[] );
 void listar_ventas_por_cliente( char[], int );
 void listar_ventas_por_mes( char[], int, int );
 
-int calcular_total_diario( char[], int, int, int );
+float calcular_total_diario( char[], int, int, int );
 float calcular_promedio_mensual( void );
 
 void mostrar_opciones_ventas( void );
 void ejecutar_venta( int );
 
 int bucle_main_ventas( void );
+
+int buscar_producto_por_nombre( char[] );
+int buscar_producto_por_id( int );
+Producto get_producto_por_id( int );
+int buscar_cliente_por_dni( int );
+float obtener_precio( int );
 
 /* IMPLEMENTACIO MENU INTEGRADO  */
 void ventas_menu_altas(void);
