@@ -23,7 +23,9 @@ Producto nuevoProducto(void)
         a.id=1 + contarRegistros("productos.bin");
         printf("La ID del producto es: %i\n",a.id);
         printf("Ingrese nombre del producto\n");
-        scanf("%s",&a.producto);
+        fflush(stdin);
+        fgets(&a.producto,30,stdin);
+        fflush(stdin);
         printf("Ingrese cantidad de productos\n");
         scanf("%i",&a.stock);
         printf("Ingrese costo del producto\n");
@@ -228,7 +230,9 @@ void modificar(void)
         else
         {
             printf("Ingrese nombre del producto\n");
-            scanf("%s",&a.producto);
+            fflush(stdin);
+            fgets(&a.producto,30,stdin);
+            fflush(stdin);
             printf("Ingrese cantidad de productos\n");
             scanf("%i",&a.stock);
             printf("Ingrese costo del producto\n");
