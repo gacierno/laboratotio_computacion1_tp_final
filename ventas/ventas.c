@@ -4,6 +4,8 @@
 #include "../productos.c"
 #include "../clientes/clientes.h"
 
+Menu VENTAS_MENU;
+
 /*
 
 *   Ventas
@@ -179,15 +181,41 @@ FUNCIONES PARA MANEJAR EL CLIENTE DE LA VENTA
 */
 int get_idCliente()
 {
-    Cliente current_cli;
     int id = 0;
     int dni = 0;
-    printf( "Por favor ingrese el numero de documento del cliente \n");
-    fflush( stdin );
-    scanf( "%d", &dni );
-    current_cli = getClientByDNI( dni ); //funcion de ../clientes/clientes.h
-    id = current_cli.id;
-    printf("El id encontrado es %d", id);
+    do
+    {
+        printf( "Por favor ingrese el numero de documento del cliente \n");
+        fflush( stdin );
+        scanf( "%d", &dni );
+        id = buscar_cliente_por_dni( dni ); //funcion de ../clientes/clientes.h
+        if( id == -1 )
+        {
+            printf("El cliente seleccionado no existe por favor intente nuevamente \n");
+        }
+    }while( id == -1);
+    printf("El id encontrado es %d\n", id);
+    return id;
+}
+
+int buscar_cliente_por_dni( int dni_cli )
+{
+    int id = -1;
+    int flag = 0;
+    Cliente current_cli;
+    FILE * archivo_clientes;
+    archivo_clientes = fopen("clients.dat", "rb");
+    if( archivo_clientes != NULL)
+    {
+        while( fread(&current_cli, sizeof(Cliente), 1, archivo_clientes)!=0 && flag == 0)
+        {
+            if( current_cli.dni == dni_cli )
+            {
+                flag = 1;
+                id = current_cli.id;
+            }
+        }
+    }
     return id;
 }
 
@@ -196,18 +224,85 @@ FUNCIONES PARA MANEJAR EL PRODUCTO DE LA VENTA
 */
 int get_idProducto()
 {
-    return 0;
+    int op = 0;
+    int id_prod;
+    Producto current_prod;
+    int id_busca;
+    char nombre[20];
+    char control = 's';
+    do
+    {
+        printf("\nPara buscar el producto elija el criterio de busqueda\n");
+        printf("1> Buscar por nombre\n");
+        printf("2> Buscar por id\n");
+        fflush(stdin);
+        scanf("%d", &op);
+    }while( op!=1 && op!=2 );
+    switch( op )
+    {
+    case 1:
+        do
+        {
+            printf("Ingrese el nombre \n");
+            fflush(stdin);
+            fgets( nombre, 20, stdin);
+            id_prod = buscar_producto_por_nombre( nombre );
+            if(id_prod != 0){
+                current_prod = get_producto_por_id( id_prod );
+                mostrarProducto( current_prod );
+            }
+            printf("Desea hacer otra busqueda?\n");
+            fflush(stdin);
+            scanf("%c", &control);
+        }while(control != 'n');
+        break;
+    case 2:
+        do
+        {
+            printf("Ingrese el id \n");
+            fflush(stdin);
+            scanf("%d", &id_busca);
+            id_prod = buscar_producto_por_id( id_busca );
+            if(id_prod != 0){
+                current_prod = get_producto_por_id( id_prod );
+                mostrarProducto( current_prod );
+            }
+            printf("Desea hacer otra busqueda?\n");
+            fflush(stdin);
+            scanf("%c", &control);
+        }while(control != 'n');
+        break;
+    }
+
+    return id_prod;
 }
 
 int canidad_producto_verificada( int id_producto )
 {
     int cantidad = 0;
-    int verificada = 0; //aun no esta verificada
+    Producto current_prod;
+    FILE *archivo_prods;
 
-    printf( "Ingrese la cantidad del producto vendido: \n" );
-    scanf( "%d", &cantidad );
+    archivo_prods = fopen("producto.bin", "rb+");
 
-    //si la cantidad es valida
+    fseek( archivo_prods, (long)(id_producto-1)*sizeof(Producto), SEEK_SET );
+    fread(&current_prod, sizeof(Producto), 1, archivo_prods);
+
+    do
+    {
+        printf( "Ingrese la cantidad del producto vendido: \n" );
+        fflush(stdin);
+        scanf( "%d", &cantidad );
+        if( cantidad > current_prod.stock )
+        {
+            printf(" ingrese una cantidad valida \n");
+        }
+    }while( cantidad > current_prod.stock );
+
+    current_prod.stock = current_prod.stock - cantidad;
+    fseek( archivo_prods, (long)(id_producto-1)*sizeof(Producto), SEEK_SET );
+    fwrite( &current_prod, sizeof(Producto), 1, archivo_prods);
+    fclose(archivo_prods);
     return cantidad;
 }
 
@@ -325,10 +420,10 @@ void listar_ventas_por_mes( char nombre_archivo[], int mes, int anyo )
 /*
 FUNCIONES PARA REALIZAR CALCULOS
 */
-int calcular_total_diario( char nombre_archivo[], int dia, int mes, int anyo )
+float calcular_total_diario( char nombre_archivo[], int dia, int mes, int anyo )
 {
-    int total = 0;
-    int precio_aux = 1;
+    float total = 0;
+    float precio_aux = 1;
     Venta actual;
     FILE *archivo;
 
@@ -339,7 +434,7 @@ int calcular_total_diario( char nombre_archivo[], int dia, int mes, int anyo )
         {
             if( actual.anio == anyo && actual.mes == mes && actual.dia == dia )//es decir q es el mismo dia
             {
-                //precio_aux = obtener_precio( actual.idProducto )
+                precio_aux = obtener_precio( actual.idProducto );
                 total = total + actual.cantidad * precio_aux;
             }
         }
@@ -349,12 +444,19 @@ int calcular_total_diario( char nombre_archivo[], int dia, int mes, int anyo )
     return total;
 }
 
+float obtener_precio( int id_prod )
+{
+    Producto current;
+    current = get_producto_por_id( id_prod );
+    return current.pvp;
+}
+
 float calcular_promedio_mensual()
 {
     float promedio = 0.0;
-    int suma = 0;
+    float suma = 0;
     int dia_0 = 1, mes_0, anyo_0;
-    int matriz_mes[4][7];
+    float matriz_mes[4][7];
     int f = 0, c = 0;
 
     printf("Ingrese el mes y el anyo que desea calular el promedio \n");
@@ -381,7 +483,7 @@ float calcular_promedio_mensual()
             suma = suma + matriz_mes[f][c];
         }
     }
-    promedio = (float)suma / 28;
+    promedio = suma / 28;
 
     return promedio;
 }
@@ -449,6 +551,68 @@ int bucle_main_ventas()
     return opcion;
 }
 
+int buscar_producto_por_nombre( char nombre_producto[])
+{
+    Producto existente;
+    int existe = 0;
+    FILE *archivo_prods;
+    archivo_prods = fopen( "producto.bin", "rb" );
+    if( archivo_prods != NULL )
+    {
+        while( fread( &existente, sizeof(Producto), 1, archivo_prods ) != 0 && existe == 0 )
+        {
+            if( strcmpi(existente.producto, nombre_producto) == 0  )
+            {
+                existe = 1;
+            }
+        }
+    }else{
+        existente.id = 0;
+    }
+    return existente.id;
+}
+int buscar_producto_por_id( int id_buscar )
+{
+    Producto existente;
+    int existe = 0;
+    FILE *archivo_prods;
+    archivo_prods = fopen( "producto.bin", "rb" );
+    if( archivo_prods != NULL )
+    {
+        while( existe == 0 && fread( &existente, sizeof(Producto), 1, archivo_prods ) != 0 )
+        {
+            if( existente.id == id_buscar )
+            {
+                existe = 1;
+            }
+        }
+        fclose(archivo_prods);
+    }else{
+        existente.id = 0;
+    }
+    return existente.id;
+}
+
+Producto get_producto_por_id( int id_buscar )
+{
+    Producto existente;
+    int existe = 0;
+    FILE *archivo_prods;
+    archivo_prods = fopen( "producto.bin", "rb" );
+    if( archivo_prods != NULL )
+    {
+        while( existe == 0 && fread( &existente, sizeof(Producto), 1, archivo_prods ) != 0 )
+        {
+            if( existente.id == id_buscar )
+            {
+                existe = 1;
+            }
+        }
+        fclose(archivo_prods);
+    }
+    return existente;
+}
+
 /*  IMPLEMENTACION PARA EL MENU INTEGRADOR  */
 
 void ventas_menu_altas( void )
@@ -456,22 +620,25 @@ void ventas_menu_altas( void )
     Venta venta_actual;
     venta_actual = alta_de_ventas();
     guardar_venta_archivo( REGISTRO_VENTAS, venta_actual);
+    VENTAS_MENU.show();
 }
 void ventas_menu_lista_cliente( void )
 {
     int id_client;
     id_client = get_idCliente();
     listar_ventas_por_cliente( REGISTRO_VENTAS, id_client );
+    VENTAS_MENU.show();
 }
 void ventas_menu_lista_mes( void )
 {
     int m_dia, m_mes, m_anyo;
     ingresar_fecha_validada( &m_dia, &m_mes, &m_anyo);
     listar_ventas_por_mes( REGISTRO_VENTAS, m_mes, m_anyo );
+    VENTAS_MENU.show();
 }
 void ventas_menu_promedio( void )
 {
-    printf( "\nEl promedio mensual es %f", calcular_promedio_mensual() );
+    printf( "\nEl promedio mensual es %.2f \n", calcular_promedio_mensual() );
+    VENTAS_MENU.show();
 }
-
 

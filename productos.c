@@ -1,10 +1,11 @@
+#pragma once
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 // NUEVO //////////////////////
 
-//Menu PRODUCTOS_MENU;
+Menu PRODUCTOS_MENU;
 
 typedef struct{
     int id;
@@ -22,7 +23,9 @@ Producto nuevoProducto(void)
         a.id=1 + contarRegistros("productos.bin");
         printf("La ID del producto es: %i\n",a.id);
         printf("Ingrese nombre del producto\n");
-        scanf("%s",&a.producto);
+        fflush(stdin);
+        fgets(&a.producto,30,stdin);
+        fflush(stdin);
         printf("Ingrese cantidad de productos\n");
         scanf("%i",&a.stock);
         printf("Ingrese costo del producto\n");
@@ -62,7 +65,7 @@ void agregarProducto(void)
         }
     }
     fclose(arch);
-//    PRODUCTOS_MENU.show();
+    PRODUCTOS_MENU.show();
 }
 int contarRegistros( void )
 {
@@ -202,7 +205,7 @@ void bajaProducto(void)
     }
 
     fclose(arch);
-    //PRODUCTOS_MENU.show();
+    PRODUCTOS_MENU.show();
 }
 
 
@@ -227,7 +230,9 @@ void modificar(void)
         else
         {
             printf("Ingrese nombre del producto\n");
-            scanf("%s",&a.producto);
+            fflush(stdin);
+            fgets(&a.producto,30,stdin);
+            fflush(stdin);
             printf("Ingrese cantidad de productos\n");
             scanf("%i",&a.stock);
             printf("Ingrese costo del producto\n");
@@ -267,7 +272,7 @@ void mostrarTodosProductos (void)
         }
     }
     fclose(arch);
-   // PRODUCTOS_MENU.show();
+    PRODUCTOS_MENU.show();
 }
 
 void menuProductos()
