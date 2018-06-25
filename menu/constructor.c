@@ -49,7 +49,7 @@ Menu constructClientsMenu(){
 
 
   MenuOption volver;
-  volver.function = &MAIN_MENU.show;
+  volver.function = MAIN_MENU.show;
   strcpy(volver.text,"Volver al menu principal");
   CLIENTS_MENU.options[4] = volver;
 
@@ -95,7 +95,7 @@ Menu constructProductosMenu(){
 
 
   MenuOption volver;
-  volver.function = &MAIN_MENU.show;
+  volver.function = MAIN_MENU.show;
   strcpy(volver.text,"Volver al menu principal");
   PRODUCTOS_MENU.options[4] = volver;
 
@@ -143,9 +143,9 @@ Menu constructVentasMenu(){
     VENTAS_MENU.options[4] = promedioVentas;
 
     MenuOption volver;
-    volver.function = &MAIN_MENU.show;
+    volver.function = MAIN_MENU.show;
     strcpy(volver.text,"Volver al menu principal");
-    VENTAS_MENU.options[4] = volver;
+    VENTAS_MENU.options[5] = volver;
 }
 
 
