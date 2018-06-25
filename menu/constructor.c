@@ -23,7 +23,7 @@ Menu constructClientsMenu(){
 
   strcpy(CLIENTS_MENU.title,"Clients");
   CLIENTS_MENU.show = showClientsMenu;
-  CLIENTS_MENU.optionCount = 4;
+  CLIENTS_MENU.optionCount = 5;
 
   MenuOption mostrar;
   mostrar.function = &showAllClients;
@@ -47,6 +47,12 @@ Menu constructClientsMenu(){
   strcpy(baja.text,"Bajas");
   CLIENTS_MENU.options[3] = baja;
 
+
+  MenuOption volver;
+  volver.function = &MAIN_MENU.show;
+  strcpy(volver.text,"Volver al menu principal");
+  CLIENTS_MENU.options[4] = volver;
+
 }
 
 /*
@@ -63,7 +69,7 @@ Menu constructProductosMenu(){
 
   strcpy(PRODUCTOS_MENU.title,"Productos");
   PRODUCTOS_MENU.show = showProductosMenu;
-  PRODUCTOS_MENU.optionCount = 4;
+  PRODUCTOS_MENU.optionCount = 5;
 
   MenuOption mostrar;
   mostrar.function = &mostrarTodosProductos;
@@ -86,6 +92,12 @@ Menu constructProductosMenu(){
   baja.function = bajaProducto;
   strcpy(baja.text,"Bajas");
   PRODUCTOS_MENU.options[3] = baja;
+
+
+  MenuOption volver;
+  volver.function = &MAIN_MENU.show;
+  strcpy(volver.text,"Volver al menu principal");
+  PRODUCTOS_MENU.options[4] = volver;
 
 }
 
@@ -130,10 +142,10 @@ Menu constructVentasMenu(){
     strcpy(promedioVentas.text,"Promedio de ventas del mes");
     VENTAS_MENU.options[4] = promedioVentas;
 
-    MenuOption salir_ventas;
-    salir_ventas.function =  &ventas_menu_salida;
-    strcpy(salir_ventas.text,"Salir");
-    VENTAS_MENU.options[5] = salir_ventas;
+    MenuOption volver;
+    volver.function = &MAIN_MENU.show;
+    strcpy(volver.text,"Volver al menu principal");
+    VENTAS_MENU.options[4] = volver;
 }
 
 
