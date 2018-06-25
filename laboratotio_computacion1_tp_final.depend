@@ -29,7 +29,7 @@
 
 1529890251 c:\users\german\documents\github\laboratotio_computacion1_tp_final\clientes\clientes.h
 
-1529890219 c:\users\german\documents\github\laboratotio_computacion1_tp_final\productos.c
+1529890887 c:\users\german\documents\github\laboratotio_computacion1_tp_final\productos.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -70,7 +70,7 @@
 
 1529888592 c:\users\german\documents\github\laboratotio_computacion1_tp_final\ventas\ventas.h
 
-1529889276 c:\users\german\documents\github\laboratotio_computacion1_tp_final\ventas\ventas.c
+1529891009 c:\users\german\documents\github\laboratotio_computacion1_tp_final\ventas\ventas.c
 	<stdlib.h>
 	<stdio.h>
 	"ventas.h"

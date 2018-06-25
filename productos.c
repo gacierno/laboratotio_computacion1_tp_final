@@ -5,7 +5,7 @@
 
 // NUEVO //////////////////////
 
-//Menu PRODUCTOS_MENU;
+Menu PRODUCTOS_MENU;
 
 typedef struct{
     int id;
@@ -65,7 +65,7 @@ void agregarProducto(void)
         }
     }
     fclose(arch);
-//    PRODUCTOS_MENU.show();
+    PRODUCTOS_MENU.show();
 }
 int contarRegistros( void )
 {
@@ -205,7 +205,7 @@ void bajaProducto(void)
     }
 
     fclose(arch);
-    //PRODUCTOS_MENU.show();
+    PRODUCTOS_MENU.show();
 }
 
 
@@ -272,7 +272,7 @@ void mostrarTodosProductos (void)
         }
     }
     fclose(arch);
-   // PRODUCTOS_MENU.show();
+    PRODUCTOS_MENU.show();
 }
 
 void menuProductos()

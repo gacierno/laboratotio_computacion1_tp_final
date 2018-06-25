@@ -4,6 +4,8 @@
 #include "../productos.c"
 #include "../clientes/clientes.h"
 
+Menu VENTAS_MENU;
+
 /*
 
 *   Ventas
@@ -618,21 +620,25 @@ void ventas_menu_altas( void )
     Venta venta_actual;
     venta_actual = alta_de_ventas();
     guardar_venta_archivo( REGISTRO_VENTAS, venta_actual);
+    VENTAS_MENU.show();
 }
 void ventas_menu_lista_cliente( void )
 {
     int id_client;
     id_client = get_idCliente();
     listar_ventas_por_cliente( REGISTRO_VENTAS, id_client );
+    VENTAS_MENU.show();
 }
 void ventas_menu_lista_mes( void )
 {
     int m_dia, m_mes, m_anyo;
     ingresar_fecha_validada( &m_dia, &m_mes, &m_anyo);
     listar_ventas_por_mes( REGISTRO_VENTAS, m_mes, m_anyo );
+    VENTAS_MENU.show();
 }
 void ventas_menu_promedio( void )
 {
     printf( "\nEl promedio mensual es %.2f \n", calcular_promedio_mensual() );
+    VENTAS_MENU.show();
 }
 
