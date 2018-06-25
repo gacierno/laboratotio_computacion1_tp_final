@@ -103,7 +103,7 @@ Menu constructVentasMenu(){
 
     strcpy(VENTAS_MENU.title,"Ventas");
     VENTAS_MENU.show = showVentasMenu;
-    VENTAS_MENU.optionCount = 5;
+    VENTAS_MENU.optionCount = 6;
 
     MenuOption altaV;
     altaV.function = &ventas_menu_altas;
@@ -129,6 +129,11 @@ Menu constructVentasMenu(){
     promedioVentas.function = &ventas_menu_promedio;
     strcpy(promedioVentas.text,"Promedio de ventas del mes");
     VENTAS_MENU.options[4] = promedioVentas;
+
+    MenuOption salir_ventas;
+    salir_ventas.function =  &ventas_menu_salida;
+    strcpy(salir_ventas.text,"Salir");
+    VENTAS_MENU.options[5] = salir_ventas;
 }
 
 

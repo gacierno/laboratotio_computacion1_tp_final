@@ -2,7 +2,7 @@
 1529875042 source:c:\users\german\documents\github\laboratotio_computacion1_tp_final\main.c
 	"./menu/constructor.c"
 
-1529888369 c:\users\german\documents\github\laboratotio_computacion1_tp_final\menu\constructor.c
+1529892570 c:\users\german\documents\github\laboratotio_computacion1_tp_final\menu\constructor.c
 	<string.h>
 	"./menu.c"
 	"../clientes/clientes.c"
@@ -27,9 +27,9 @@
 	<stdio.h>
 	<string.h>
 
-1529890251 c:\users\german\documents\github\laboratotio_computacion1_tp_final\clientes\clientes.h
+1529891159 c:\users\german\documents\github\laboratotio_computacion1_tp_final\clientes\clientes.h
 
-1529890887 c:\users\german\documents\github\laboratotio_computacion1_tp_final\productos.c
+1529891159 c:\users\german\documents\github\laboratotio_computacion1_tp_final\productos.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -68,9 +68,9 @@
 	<stdlib.h>
 	<string.h>
 
-1529888592 c:\users\german\documents\github\laboratotio_computacion1_tp_final\ventas\ventas.h
+1529891159 c:\users\german\documents\github\laboratotio_computacion1_tp_final\ventas\ventas.h
 
-1529891009 c:\users\german\documents\github\laboratotio_computacion1_tp_final\ventas\ventas.c
+1529892538 c:\users\german\documents\github\laboratotio_computacion1_tp_final\ventas\ventas.c
 	<stdlib.h>
 	<stdio.h>
 	"ventas.h"
