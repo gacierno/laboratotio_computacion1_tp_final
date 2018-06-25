@@ -1,16 +1,15 @@
 #include <stdio.h>
 #include "headers/menu.h"
-#include "../clear-screen/clear-screen.c"
 
 void _showMenu(Menu *m){
 
-  clearScreen();
+  system("cls");
 
   int i;
   int userOption;
   char enterKey;
 
-  printf("===============================================");
+  printf("\n===============================================");
   printf("\n%s\n", (*m).title);
   printf("===============================================");
   printf("\n\n");
@@ -20,7 +19,7 @@ void _showMenu(Menu *m){
     printf("%s\n", (*m).options[i].text);
   }
 
-  printf("\n\nEnter option number: ");
+  printf("\n\nIngrese la opcion deseada: ");
   fflush(stdin);
   scanf("%i",&userOption);
 
