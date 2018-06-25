@@ -65,6 +65,7 @@ void agregarProducto(void)
         }
     }
     fclose(arch);
+    system("pause");
     PRODUCTOS_MENU.show();
 }
 int contarRegistros( void )
@@ -205,6 +206,7 @@ void bajaProducto(void)
     }
 
     fclose(arch);
+    system("pause");
     PRODUCTOS_MENU.show();
 }
 
@@ -229,6 +231,7 @@ void modificar(void)
         }
         else
         {
+            a.id = pos;
             printf("Ingrese nombre del producto\n");
             fflush(stdin);
             fgets(&a.producto,30,stdin);
@@ -247,6 +250,8 @@ void modificar(void)
         }
     }
     fclose(arch);
+    system("pause");
+    PRODUCTOS_MENU.show();
 }
 
 void mostrarProducto( Producto uno )
@@ -272,6 +277,7 @@ void mostrarTodosProductos (void)
         }
     }
     fclose(arch);
+    system("pause");
     PRODUCTOS_MENU.show();
 }
 

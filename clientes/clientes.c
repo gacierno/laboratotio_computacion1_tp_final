@@ -66,7 +66,7 @@ void guardarCliente(Cliente c){
   fwrite(&c, sizeof(Cliente) , 1, file);
   fclose(file);
 
-  printf("\n> CLIENTE GUARDADO EXITOSAMENTE");
+  printf("\n> CLIENTE GUARDADO EXITOSAMENTE\n");
 }
 
 void createClients(){
@@ -82,6 +82,7 @@ void createClients(){
     fflush(stdin);
     scanf("%s",&control);
   }
+  system("pause");
   CLIENTS_MENU.show();
 }
 
@@ -116,6 +117,7 @@ void showAllClients(){
   }else{
     printf("Aun no se han ingresado clientes.");
   }
+  system("pause");
   CLIENTS_MENU.show();
 }
 
@@ -197,6 +199,7 @@ void darDeBaja(){
   if(getClientByDNI(dni).id != -1){
     disableClient(dni);
   }
+  system("pause");
   CLIENTS_MENU.show();
 }
 
@@ -219,5 +222,6 @@ void modificarCliente(){
   }else{
     printf("\nNo exite un cliente con DNI %i",dni);
   }
+  system("pause");
   CLIENTS_MENU.show();
 }

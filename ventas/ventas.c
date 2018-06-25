@@ -5,29 +5,6 @@
 #include "../clientes/clientes.h"
 
 Menu VENTAS_MENU;
-Menu MAIN_MENU;
-
-/*
-
-*   Ventas
-*       *Alta de Ventas
-*           Buscar cliente
-*           Buscar Producto
-*           Dar de Alta la venta
-*           Guardar en archivo la venta
-*       *Anulación de Venta
-*       *Listar ventas por cliente
-*       *Listar Ventas del mes
-*       Mostrar promedio de ventas del mes (utilizar matrices)
-*           La Matriz tiene que ser de 7*4 para obtener el promedio de ventas diario de los ultimos 28 dias
-*       Validaciones:
-*           No mostrar en listado de venta los productos con stock 0.
-*           Validar en la venta que la cantidad no sobrepase el stock.
-*           Al realizarse la venta restar la cantidad del stock del producto.
-*           En la venta validar la fecha. Año válido. Mes válido y día válido de acuerdo al mes y al año. (Ojo en febrero, validar año bisiesto).
-
-*/
-
 
 /*
 FUNCIONES PARA MANEJAR FECHAS
@@ -433,7 +410,7 @@ float calcular_total_diario( char nombre_archivo[], int dia, int mes, int anyo )
     {
         while( fread(&actual, sizeof(Venta), 1, archivo) != 0 )
         {
-            if( actual.anio == anyo && actual.mes == mes && actual.dia == dia )//es decir q es el mismo dia
+            if( actual.anio == anyo && actual.mes == mes && actual.dia == dia && actual.anular != 's' )//es decir q es el mismo dia
             {
                 precio_aux = obtener_precio( actual.idProducto );
                 total = total + actual.cantidad * precio_aux;
@@ -621,6 +598,7 @@ void ventas_menu_altas( void )
     Venta venta_actual;
     venta_actual = alta_de_ventas();
     guardar_venta_archivo( REGISTRO_VENTAS, venta_actual);
+    system("pause");
     VENTAS_MENU.show();
 }
 void ventas_menu_lista_cliente( void )
@@ -628,6 +606,7 @@ void ventas_menu_lista_cliente( void )
     int id_client;
     id_client = get_idCliente();
     listar_ventas_por_cliente( REGISTRO_VENTAS, id_client );
+    system("pause");
     VENTAS_MENU.show();
 }
 void ventas_menu_lista_mes( void )
@@ -635,16 +614,14 @@ void ventas_menu_lista_mes( void )
     int m_dia, m_mes, m_anyo;
     ingresar_fecha_validada( &m_dia, &m_mes, &m_anyo);
     listar_ventas_por_mes( REGISTRO_VENTAS, m_mes, m_anyo );
+    system("pause");
     VENTAS_MENU.show();
 }
 void ventas_menu_promedio( void )
 {
     printf( "\nEl promedio mensual es %.2f \n", calcular_promedio_mensual() );
+    system("pause");
     VENTAS_MENU.show();
 }
 
-void ventas_menu_salida( void )
-{
-    MAIN_MENU.show();
-}
 

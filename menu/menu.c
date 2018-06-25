@@ -3,7 +3,7 @@
 
 void _showMenu(Menu *m){
 
-  system('cls')
+  system("cls");
 
   int i;
   int userOption;

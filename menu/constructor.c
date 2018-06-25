@@ -9,6 +9,10 @@ Menu CLIENTS_MENU;
 Menu PRODUCTOS_MENU;
 Menu VENTAS_MENU;
 
+void _exitMain( void ){
+    return 0;
+}
+
 void showMainMenu(){
   _showMenu(&MAIN_MENU);
 }
@@ -165,7 +169,7 @@ Menu constructMainMenu(){
 
   strcpy(MAIN_MENU.title,"MAIN MENU");
   MAIN_MENU.show = showMainMenu;
-  MAIN_MENU.optionCount = 3;
+  MAIN_MENU.optionCount = 4;
 
   MenuOption client;
   strcpy(client.text,CLIENTS_MENU.title);
@@ -179,9 +183,14 @@ Menu constructMainMenu(){
   strcpy( venta.text, VENTAS_MENU.title );
   venta.function = VENTAS_MENU.show;
 
+  MenuOption salir;
+  strcpy( salir.text, "Salir" );
+  salir.function = &_exitMain;
+
   MAIN_MENU.options[0] = client;
   MAIN_MENU.options[1] = producto;
   MAIN_MENU.options[2] = venta;
+  MAIN_MENU.options[3] = salir;
 }
 
 
